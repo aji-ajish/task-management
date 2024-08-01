@@ -23,12 +23,17 @@ const Schema = mongoose.Schema({
         required: true,
     },
     role: {
-        type: String,
-        default: 'user',
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Department',
+        required: true,
     },
     image: {
         type: String
-    }
+    },
+    status: {
+        type: Number,
+        default: 1,
+    },
 }, { timestamps: true })
 
 export const User = mongoose.model('User', Schema)
