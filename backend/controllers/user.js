@@ -77,12 +77,18 @@ export const loginUser = async (req, res) => {
 
         // generate sign in token
         const token = jwt.sign({ _id: user.id }, process.env.JWT_SECRET, { expiresIn: "5d" })
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development",
+            sameSite: "strict",
+            maxAge: 5 * 24 * 60 * 60 * 1000
+        })
 
         // exclude the password before sending
         const { password: userPassword, ...userDetails } = user.toObject()
         return res.status(200).json({
             message: `Welcome ${user.name}`,
-            token,
+            // token,
             user: userDetails
         })
 
@@ -92,6 +98,22 @@ export const loginUser = async (req, res) => {
         })
     }
 }
+
+export const logoutUser = async (req, res) => {
+    try {
+        res.cookie("token", "", {
+            httpOnly: true,
+            expires: new Date(0),
+        });
+        return res.status(403).json({
+            message: "Logged out.."
+        })
+    } catch (error) {
+        return res.status(403).json({
+            message: error.message
+        })
+    }
+};
 
 export const myProfile = async (req, res) => {
     try {

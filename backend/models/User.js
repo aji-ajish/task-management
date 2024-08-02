@@ -23,7 +23,7 @@ const Schema = mongoose.Schema({
         required: true,
     },
     role: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Department',
         required: true,
     },

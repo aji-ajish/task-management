@@ -1,7 +1,7 @@
 import express from 'express';
 import {
     createUser, deleteUser,
-    forgotPassword, loginUser, myProfile,
+    forgotPassword, loginUser, logoutUser, myProfile,
     resetPassword,
     updatePassword, updateProfile, updateUserById,
     user, userList, verifyOTP
@@ -13,6 +13,7 @@ const router = express.Router();
 
 router.post('/user/createUser', isAuth, uploadProfile, createUser)
 router.post('/user/login', loginUser)
+router.post('/user/logout',isAuth, logoutUser)
 router.get('/user/profile', isAuth, myProfile)
 router.get('/user/users', isAuth, userList)
 router.get('/user/:id', isAuth, user)
