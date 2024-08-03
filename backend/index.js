@@ -12,11 +12,23 @@ const port = process.env.PORT;
 // middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors())
 app.use(cookieParser())
 
+var whitelist = ['http://localhost:5173/']
+var corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1|| !origin) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+}
+
+app.use(cors(corsOptions))
+
 // static files
-app.use('/userProfiles',express.static('userProfiles'))
+app.use('/userProfiles', express.static('userProfiles'))
 
 // routes
 app.use('/api/', userRouter)
