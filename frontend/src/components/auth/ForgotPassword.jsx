@@ -13,7 +13,7 @@ export default function ForgotPassword() {
                 <div className="text-center">
                     <div className="mt-5 space-y-2">
                         <h3 className="dark:text-white text-2xl font-bold sm:text-3xl">Forgot Password</h3>
-                        <p className="font-medium text-indigo-600 hover:text-indigo-500">Enter your email address.</p>
+                        <p className="font-medium text-indigo-600 hover:text-indigo-500">Enter your email address. and OTP is send Your email</p>
                     </div>
                 </div>
                 <form
@@ -34,7 +34,7 @@ export default function ForgotPassword() {
                     <button
                         onClick={submitHandler} className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
                     >
-                        Send
+                        Request OTP
                     </button>
                 </form>
             </div>

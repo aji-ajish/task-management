@@ -24,8 +24,7 @@ const Schema = mongoose.Schema({
     },
     role: {
         type: String,
-        ref: 'Department',
-        required: true,
+        default: 'user'
     },
     image: {
         type: String
