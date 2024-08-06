@@ -58,19 +58,19 @@ export const loginUser = async (req, res) => {
         // check user email address
         const user = await User.findOne({ email })
         if (!user) {
-            return res.status(500).json({
+            return res.status(401).json({
                 message: "Invalid Credentials"
             })
         }
         if (user.status === 0) {
-            return res.status(500).json({
+            return res.status(401).json({
                 message: "Account is deactivated. please contact your administrator"
             })
         }
         // password check
         const pass = await bcrypt.compare(password, user.password)
         if (!pass) {
-            return res.status(500).json({
+            return res.status(401).json({
                 message: "Invalid Credentials"
             })
         }
@@ -119,7 +119,7 @@ export const myProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user._id).select("-password")
         return res.status(200).json({
-            message: user
+            user
         })
 
     } catch (error) {

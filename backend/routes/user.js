@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post('/user/createUser', isAuth, uploadProfile, createUser)
 router.post('/user/login', loginUser)
-router.post('/user/logout',isAuth, logoutUser)
+router.get('/user/logout',isAuth, logoutUser)
 router.get('/user/profile', isAuth, myProfile)
 router.get('/user/users', isAuth, userList)
 router.get('/user/:id', isAuth, user)

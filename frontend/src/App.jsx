@@ -1,26 +1,45 @@
-
-import ForgotPassword from "./components/auth/ForgotPassword"
-import Login from "./components/auth/Login"
-import OTPVerification from "./components/auth/OTPVerification"
-import ResetPassword from "./components/auth/ResetPassword"
-import Dashboard from "./components/dashboard/Dashboard"
-import PageNotFound from "./components/dashboard/PageNotFound"
-import "./index.css"
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./components/auth/Login";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import OTPVerification from "./components/auth/OTPVerification";
+import ResetPassword from "./components/auth/ResetPassword";
+import Dashboard from "./components/dashboard/Dashboard";
+import PageNotFound from "./components/dashboard/PageNotFound";
+import "./index.css";
+import { HelmetProvider } from "react-helmet-async";
+import { ToastContainer } from "react-toastify";
+import { useEffect } from "react";
+import { store } from "./store";
+import { loadUser } from "./actions/userAction";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
 
 export default function App() {
+  useEffect(() => {
+    store.dispatch(loadUser);
+  }, []);
+
   return (
     <main className="dark:bg-slate-900">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="forgotPassword" element={<ForgotPassword />} />
-          <Route path="otpVerification" element={<OTPVerification />} />
-          <Route path="resetPassword" element={<ResetPassword />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+        <HelmetProvider>
+          <ToastContainer theme="dark" />
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="forgotPassword" element={<ForgotPassword />} />
+            <Route path="otpVerification" element={<OTPVerification />} />
+            <Route path="resetPassword" element={<ResetPassword />} />
+            <Route
+              path="dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </HelmetProvider>
       </BrowserRouter>
     </main>
-  )
+  );
 }

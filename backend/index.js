@@ -14,16 +14,17 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-var whitelist = ['http://localhost:5173/']
-var corsOptions = {
+const whitelist = ['http://localhost:8080'];
+const corsOptions = {
     origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1|| !origin) {
-            callback(null, true)
+        if (whitelist.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
         } else {
-            callback(new Error('Not allowed by CORS'))
+            callback(new Error('Not allowed by CORS'));
         }
-    }
-}
+    },
+    credentials: true, // Allow cookies to be sent with the request
+};
 
 app.use(cors(corsOptions))
 
