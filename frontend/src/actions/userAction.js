@@ -23,14 +23,15 @@ export const login = (email, password) => async (dispatch) => {
     }
 }
 
-export const logout=async (dispatch)=>{
+export const logout = () => async (dispatch) => {
     try {
-      const {data} = await axios.get('/api/user/logout')
-        dispatch(logoutSuccess(data))
+        const { data } = await axios.get('/api/user/logout');
+        dispatch(logoutSuccess(data));
     } catch (error) {
-        dispatch(logoutFail(error.response.data.message))
+        dispatch(logoutFail(error.response.data.message));
     }
 }
+
 
 
 export const loadUser = async (dispatch) => {

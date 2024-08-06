@@ -33,9 +33,9 @@ export default function SideMenu() {
     grayBG.current.classList.add("hidden");
   };
 
-  const logoutHandler = () => {
-    dispatch(logout);
-    navigate("/");
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigate("/"); // Redirect to login or home page after logout
   };
 
   useEffect(() => {
@@ -280,7 +280,7 @@ export default function SideMenu() {
                   />
                 </svg>
                 <span
-                  onClick={logoutHandler}
+                  onClick={handleLogout}
                   className="flex-1 ms-3 whitespace-nowrap"
                 >
                   Logout
