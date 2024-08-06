@@ -79,10 +79,10 @@ export const loginUser = async (req, res) => {
         const token = jwt.sign({ _id: user.id }, process.env.JWT_SECRET, { expiresIn: "5d" })
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            sameSite: "strict",
+            secure: process.env.NODE_ENV !== "development", // Ensure secure cookies in production
+            sameSite: 'None', // SameSite attribute set to None
             maxAge: 5 * 24 * 60 * 60 * 1000
-        })
+        });
 
         // exclude the password before sending
         const { password: userPassword, ...userDetails } = user.toObject()
@@ -104,8 +104,10 @@ export const logoutUser = async (req, res) => {
         res.cookie("token", "", {
             httpOnly: true,
             expires: new Date(0),
+            sameSite: 'None', // SameSite attribute set to None
+            secure: process.env.NODE_ENV !== "development" // Ensure secure cookies in production
         });
-        return res.status(403).json({
+        return res.status(200).json({
             message: "Logged out.."
         })
     } catch (error) {

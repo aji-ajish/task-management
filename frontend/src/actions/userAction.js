@@ -6,8 +6,11 @@ import {
     loadUserSuccess,
     loginFail,
     loginRequest,
-    loginSuccess
+    loginSuccess,
+    logoutFail,
+    logoutSuccess
 } from '../slices/authSlice'
+
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -19,6 +22,16 @@ export const login = (email, password) => async (dispatch) => {
         dispatch(loginFail(error.response.data.message))
     }
 }
+
+export const logout=async (dispatch)=>{
+    try {
+      const {data} = await axios.get('/api/user/logout')
+        dispatch(logoutSuccess(data))
+    } catch (error) {
+        dispatch(logoutFail(error.response.data.message))
+    }
+}
+
 
 export const loadUser = async (dispatch) => {
     try {

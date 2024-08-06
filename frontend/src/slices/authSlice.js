@@ -19,14 +19,28 @@ const authSlice = createSlice({
                 isAuthenticated: true,
                 user: action.payload.user
             }
-        }, loginFail(state, action) {
+        },
+        loginFail(state, action) {
             return {
                 ...state,
                 loading: false,
                 error: action.payload
             }
         },
-        loadUserRequest(state, action) {
+        logoutSuccess(state, action) {
+            return {
+                loading: false,
+                isAuthenticated: false,
+                error: action.payload.message
+            }
+        },
+        logoutFail(state, action) {
+            return {
+                ...state,
+                error: action.payload
+            }
+        },
+        loadUserRequest(state,action) {
             return {
                 ...state,
                 isAuthenticated: false,
@@ -58,6 +72,8 @@ export const {
     loginRequest,
     loginSuccess,
     loginFail,
+    logoutSuccess,
+    logoutFail,
     loadUserRequest,
     loadUserSuccess,
     loadUserFail,
