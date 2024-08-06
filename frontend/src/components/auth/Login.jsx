@@ -11,6 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const [showError, setShowError] = useState(null);
 
   const { loading, isAuthenticated, error } = useSelector(
     (state) => state.authState
@@ -23,6 +24,13 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
+    if (error) {
+      setShowError(error);
+      setTimeout(() => {
+        setShowError(null);
+      }, 1000);
+    }
+    
   };
 
   useEffect(() => {
@@ -31,22 +39,23 @@ export default function Login() {
       return;
     }
 
-    if (error) {
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "dark",
-        onOpen: () => {
-          dispatch(clearAuthError);
-        },
-      });
-      return;
-    }
+
+    // if (error) {
+    //   toast.error(error, {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: false,
+    //     draggable: false,
+    //     progress: undefined,
+    //     theme: "dark",
+    //     onOpen: () => {
+    //       dispatch(clearAuthError);
+    //     },
+    //   });
+    //   return;
+    // }
   }, [isAuthenticated, navigate, error, dispatch]);
 
   return (
@@ -80,6 +89,9 @@ export default function Login() {
                 className="w-full mt-2 px-3 py-2 dark:text-white bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
               />
             </div>
+            {showError ? (
+              <div className="!text-red-500 !mt-2 !text-center transition-all duration-500 ease-in-out">{showError}</div>
+            ):''}
             <button
               disabled={loading}
               className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"

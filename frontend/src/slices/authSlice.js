@@ -42,8 +42,7 @@ const authSlice = createSlice({
         }, loadUserFail(state, action) {
             return {
                 ...state,
-                loading: false,
-                error: action.payload
+                loading: false
             }
         },
         clearError(state, action) {
@@ -61,6 +60,7 @@ export const {
     loginFail,
     loadUserRequest,
     loadUserSuccess,
-    loadUserFail
-    , clearError } = authSlice.actions
+    loadUserFail,
+    clearError
+} = authSlice.actions
 export default authSlice.reducer

@@ -1,5 +1,13 @@
 import axios from 'axios'
-import { clearError, loadUserFail, loadUserRequest, loadUserSuccess, loginFail, loginRequest, loginSuccess } from '../slices/authSlice'
+import {
+    clearError,
+    loadUserFail,
+    loadUserRequest,
+    loadUserSuccess,
+    loginFail,
+    loginRequest,
+    loginSuccess
+} from '../slices/authSlice'
 
 export const login = (email, password) => async (dispatch) => {
     try {
