@@ -9,7 +9,7 @@ export default defineConfig({
     port:8080,
     proxy:{
       "/api":{
-        target:"https://task-management-server-q1ezbet0o-aji-ajishs-projects.vercel.app",
+        target:"http://127.0.0.1:8000",
         changeOrigin:true,rewrite:(path)=>path.replace(/^\/api/,"/api")
       }
     }
