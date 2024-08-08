@@ -32,7 +32,7 @@ app.use(cors(corsOptions))
 app.use('/userProfiles', express.static('userProfiles'))
 
 // routes
-app.use('/api/', userRouter)
+app.use('/api/v1/', userRouter)
 
 
 app.listen(port, () => {

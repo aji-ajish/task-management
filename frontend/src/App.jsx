@@ -13,6 +13,8 @@ import { store } from "./store";
 import { loadUser } from "./actions/userAction";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import Profile from "./components/user/Profile";
+import EditProfile from "./components/user/EditProfile";
+import ChangePassword from "./components/user/ChangePassword";
 
 export default function App() {
   useEffect(() => {
@@ -24,13 +26,15 @@ export default function App() {
       <BrowserRouter>
         <HelmetProvider>
           <ToastContainer theme="dark" />
+
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="forgotPassword" element={<ForgotPassword />} />
             <Route path="otpVerification" element={<OTPVerification />} />
             <Route path="resetPassword" element={<ResetPassword />} />
+
             <Route
-              path="dashboard"
+              path="/dashboard"
               element={
                 <ProtectedRoute>
                   <Dashboard />
@@ -38,10 +42,26 @@ export default function App() {
               }
             />
             <Route
-              path="profile"
+              path="/profile"
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/:id"
+              element={
+                <ProtectedRoute>
+                  <EditProfile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/changePassword/:id"
+              element={
+                <ProtectedRoute>
+                  <ChangePassword />
                 </ProtectedRoute>
               }
             />

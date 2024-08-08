@@ -4,13 +4,14 @@ import { clearAuthError, logout } from "../../actions/userAction";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import addUser from '../../assets/svg/addUser.svg'
-import user from '../../assets/svg/user.svg'
+import userIcon from '../../assets/svg/user.svg'
 import users from '../../assets/svg/users.svg'
 import logoutSvg from '../../assets/svg/logout.svg'
 import downArrow from '../../assets/svg/downArrow.svg'
 import burgerMenu from '../../assets/svg/burgerMenu.svg'
+import avatar from '../../assets/dummyAvatar.png'
 
-export default function SideMenu() {
+export default function SideMenu({ children }) {
   const dispatch = useDispatch();
   const dropDown1 = useRef();
   const sideMenu = useRef();
@@ -18,7 +19,7 @@ export default function SideMenu() {
   const menuIcon = useRef();
   const navigate = useNavigate();
 
-  const { error } = useSelector((state) => state.authState);
+  const { error, user } = useSelector((state) => state.authState);
 
   const SubmenuOpen = () => {
     if (dropDown1.current.classList.contains("hidden")) {
@@ -71,7 +72,7 @@ export default function SideMenu() {
         className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 sm:hidden"
       >
         <span className="sr-only">Open sidebar</span>
-        <img src={burgerMenu} className="size-8"/>
+        <img src={burgerMenu} className="size-8" />
       </button>
 
       <aside
@@ -91,17 +92,17 @@ export default function SideMenu() {
               </Link>
             </li>
             <li>
-              <Link to={'/dashboard/profile'}
+              <Link to={'/profile'}
                 className="flex items-center p-2 pb-4 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <img
-                  src="https://randomuser.me/api/portraits/women/79.jpg"
+                  src={user.image ? user.image : avatar}
                   className="w-10 h-10 rounded-full"
                 />
-                <div>
-                  <p className="mx-4 text-2xl relative">Ajish</p>
+                <div className="capitalize">
+                  <p className="mx-4 text-2xl relative ">{user.name}</p>
                   <span className="absolute text-xs mx-4 text-slate-400">
-                    Admin
+                    {user.role}
                   </span>
                 </div>
               </Link>
@@ -111,18 +112,18 @@ export default function SideMenu() {
                 onClick={SubmenuOpen}
                 type="button"
                 className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-               <img src={user} className="size-7"/>
+                <img src={userIcon} className="size-7" />
                 <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                   Users
                 </span>
-               <img src={downArrow} className="size-6"/>
+                <img src={downArrow} className="size-6" />
               </button>
               <ul ref={dropDown1} className="hidden py-2 space-y-2">
                 <li>
                   <a
                     href="#"
                     className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                    <img src={addUser} className="size-6"/>
+                    <img src={addUser} className="size-6" />
                     <span className="ml-2">New Users</span>
                   </a>
                 </li>
@@ -130,7 +131,7 @@ export default function SideMenu() {
                   <a
                     href="#"
                     className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                    <img src={users}  className="size-6"/>
+                    <img src={users} className="size-6" />
                     <span className="ml-2">All Users</span>
                   </a>
                 </li>
@@ -140,7 +141,7 @@ export default function SideMenu() {
 
             <li>
               <p className="flex cursor-pointer items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-              <img src={logoutSvg} className="size-6"/>
+                <img src={logoutSvg} className="size-6" />
                 <span
                   onClick={handleLogout}
                   className="flex-1 ms-3 whitespace-nowrap">
@@ -153,7 +154,7 @@ export default function SideMenu() {
       </aside>
       <div className="p-4 sm:ml-64 h-screen">
         <div className="p-4 border-2 h-full text-white justify-center flex items-center border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-          Dashboard
+          {children}
         </div>
       </div>
       <div

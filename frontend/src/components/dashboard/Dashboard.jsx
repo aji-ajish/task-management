@@ -31,6 +31,10 @@ export default function Dashboard() {
       }, [message, dispatch]);
 
     return (
-        <SideMenu />
+      <>
+        <SideMenu>
+Hom
+        </SideMenu>
+      </>
     )
 }

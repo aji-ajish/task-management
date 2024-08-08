@@ -1,6 +1,7 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
-export default function ProfileDropDown() {
+export default function ProfileDropDown({userId}) {
   const dropDown1 = useRef();
 
   const SubmenuOpen = () => {
@@ -37,20 +38,18 @@ export default function ProfileDropDown() {
       >
         <ul className="py-2">
           <li>
-            <a
-              href="#"
+            <Link to={`/profile/${userId}`}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white "
             >
               Edit Profile
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="#"
+            <Link to={`/changePassword/${userId}`}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
             >
               Change Password
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
