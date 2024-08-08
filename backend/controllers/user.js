@@ -294,7 +294,6 @@ export const forgotPassword = async (req, res) => {
 
         // generate otp
         const otp = Math.floor(Math.random() * 1000000)
-        console.log(otp);
 
         // create signed activation token
         const activationToken = jwt.sign({ user, otp }, process.env.ACTIVATION_SECRET, {

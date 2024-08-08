@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { store } from "./store";
 import { loadUser } from "./actions/userAction";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
+import Profile from "./components/user/Profile";
 
 export default function App() {
   useEffect(() => {
@@ -33,6 +34,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               }
             />

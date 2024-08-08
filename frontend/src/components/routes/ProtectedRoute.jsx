@@ -5,7 +5,7 @@ import Loader from "../layouts/Loader";
 export default function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useSelector((state) => state.authState);
 
-  if (!isAuthenticated && loading) {
+  if (!isAuthenticated && !loading) {
     return <Navigate to="/" />;
   }
   if (isAuthenticated) {
