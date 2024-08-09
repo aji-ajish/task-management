@@ -4,7 +4,7 @@ const authSlice = createSlice({
     name: 'user',
     initialState: {
         loading: true,
-        isAuthenticated: false
+        isAuthenticated: false,
     }, reducers: {
 
         loginRequest(state, action) {
@@ -90,7 +90,8 @@ const authSlice = createSlice({
             return {
                 loading: false,
                 isAuthenticated: true,
-                user: action.payload.message,
+                user: action.payload.user,
+                message: action.payload.message,
             }
         },
         profileUpdateFail(state, action) {
@@ -103,8 +104,8 @@ const authSlice = createSlice({
         clearError(state, action) {
             return {
                 ...state,
-                error: null,
-                message: null
+                error: undefined,
+                message: undefined
             }
         }
     }

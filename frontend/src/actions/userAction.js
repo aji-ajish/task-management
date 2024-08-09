@@ -66,7 +66,7 @@ export const updateProfile = (formData) => async (dispatch) => {
     try {
         dispatch(profileUpdateRequest())
 
-        const { data } = await axios.put(`/api/v1/user/updateProfile`, { formData }, {
+        const { data } = await axios.put(`/api/v1/user/updateProfile`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -79,5 +79,6 @@ export const updateProfile = (formData) => async (dispatch) => {
 }
 
 export const clearAuthError = dispatch => {
+    
     dispatch(clearError())
 }

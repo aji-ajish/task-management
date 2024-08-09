@@ -225,7 +225,18 @@ export const updateUserById = async (req, res) => {
 export const updateProfile = async (req, res) => {
     try {
 
+
         const user = await User.findById(req.user._id)
+        const { email } = req.body
+
+        // check email already exists
+        let userEmail = await User.findOne({ email })
+
+        if (user.email !== email && userEmail) {
+            return res.status(400).json({
+                message: "User Email Already Exists"
+            })
+        }
 
         Object.assign(user, req.body);
         const image = req.file
