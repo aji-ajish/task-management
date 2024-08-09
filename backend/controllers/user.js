@@ -242,7 +242,8 @@ export const updateProfile = async (req, res) => {
         await user.save();
 
         return res.json({
-            message: "Profile Updated successfully"
+            message: "Profile Updated successfully",
+            user
         })
 
     } catch (error) {

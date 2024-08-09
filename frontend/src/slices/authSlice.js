@@ -80,6 +80,26 @@ const authSlice = createSlice({
                 error: action.payload
             }
         },
+        profileUpdateRequest(state, action) {
+            return {
+                ...state,
+                loading: true
+            }
+        },
+        profileUpdateSuccess(state, action) {
+            return {
+                loading: false,
+                isAuthenticated: true,
+                user: action.payload.message,
+            }
+        },
+        profileUpdateFail(state, action) {
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        },
         clearError(state, action) {
             return {
                 ...state,
@@ -102,6 +122,9 @@ export const {
     clearError,
     singleUserRequest,
     singleUserSuccess,
-    singleUserFail
+    singleUserFail,
+    profileUpdateRequest,
+    profileUpdateSuccess,
+    profileUpdateFail
 } = authSlice.actions
 export default authSlice.reducer

@@ -9,6 +9,9 @@ import {
     loginSuccess,
     logoutFail,
     logoutSuccess,
+    profileUpdateFail,
+    profileUpdateRequest,
+    profileUpdateSuccess,
     singleUserFail,
     singleUserRequest,
     singleUserSuccess
@@ -56,6 +59,22 @@ export const singleUser = (id) => async (dispatch) => {
         dispatch(singleUserSuccess(data))
     } catch (error) {
         dispatch(singleUserFail(error.response.data.message))
+    }
+}
+
+export const updateProfile = (formData) => async (dispatch) => {
+    try {
+        dispatch(profileUpdateRequest())
+
+        const { data } = await axios.put(`/api/v1/user/updateProfile`, { formData }, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        
+        dispatch(profileUpdateSuccess(data))
+    } catch (error) {
+        dispatch(profileUpdateFail(error.response.data.message))
     }
 }
 

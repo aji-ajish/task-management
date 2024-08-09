@@ -96,7 +96,7 @@ export default function SideMenu({ children }) {
                 className="flex items-center p-2 pb-4 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <img
-                  src={user.image ? user.image : avatar}
+                  src={user.image ? `${process.env.API_URL}/${user.image}` : avatar}
                   className="w-10 h-10 rounded-full"
                 />
                 <div className="capitalize">

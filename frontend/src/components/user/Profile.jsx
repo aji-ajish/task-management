@@ -17,7 +17,7 @@ export default function Profile() {
             <div className="flex flex-col items-center pb-10 capitalize">
               <img
                 className="w-32 h-32 mb-3 rounded-full shadow-lg"
-                src={user.image ? user.image : avatar}
+                src={user.image ? `${process.env.API_URL}/${user.image}` : avatar}
                 alt="Bonnie image"
               />
               <h5 className="mb-1 text-2xl font-medium text-gray-900 dark:text-white">

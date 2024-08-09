@@ -8,6 +8,10 @@ import { useState } from "react";
 
 export default function EditProfile() {
     const { user } = useSelector(state => state.authState)
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const [address, setAddress] = useState('')
     const [avatar, setAvatar] = useState('')
     const [avatarPreview, setAvatarPreview] = useState(dummyAvatar)
 
@@ -48,6 +52,7 @@ export default function EditProfile() {
                                                 type="email"
                                                 required
                                                 value={user.name}
+                                                onChange={(e) => setName(e.target.value)}
                                                 className="w-full mt-2 px-3 py-2 dark:text-white bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                                             />
                                         </div>
@@ -59,6 +64,7 @@ export default function EditProfile() {
                                                 type="email"
                                                 required
                                                 value={user.email}
+                                                onChange={(e) => setEmail(e.target.value)}
                                                 className="w-full mt-2 px-3 py-2 dark:text-white bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                                             />
                                         </div>
@@ -70,14 +76,15 @@ export default function EditProfile() {
                                                 type="email"
                                                 required
                                                 value={user.phone}
+                                                onChange={(e) => setPhone(e.target.value)}
                                                 className="w-full mt-2 px-3 py-2 dark:text-white bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                                             />
                                         </div>
                                         <div>
                                             <label className="font-medium">
-                                                Message
+                                                Address
                                             </label>
-                                            <textarea required value={user.address} className="w-full mt-2 h-20 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"></textarea>
+                                            <textarea onChange={(e) => setAddress(e.target.value)} required value={user.address} className="w-full mt-2 h-20 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"></textarea>
                                         </div>
                                         <div className=" h-28 rounded-lg border-2 border-dashed flex items-center justify-center w-full" onChange={onChangeAvatar}>
                                             <label htmlFor="file" className="cursor-pointer text-center p-4 md:p-8">
