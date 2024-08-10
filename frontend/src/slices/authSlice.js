@@ -101,6 +101,26 @@ const authSlice = createSlice({
                 error: action.payload
             }
         },
+        changePasswordRequest(state, action) {
+            return {
+                ...state,
+                loading: true
+            }
+        },
+        changePasswordSuccess(state, action) {
+            return {
+                loading: false,
+                isAuthenticated: false,
+                message: action.payload.message
+            }
+        },
+        changePasswordFail(state, action) {
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        },
         clearError(state, action) {
             return {
                 ...state,
@@ -126,6 +146,9 @@ export const {
     singleUserFail,
     profileUpdateRequest,
     profileUpdateSuccess,
-    profileUpdateFail
+    profileUpdateFail, 
+    changePasswordRequest,
+    changePasswordSuccess,
+    changePasswordFail,
 } = authSlice.actions
 export default authSlice.reducer

@@ -80,7 +80,7 @@ export const loginUser = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV !== "development", // Ensure secure cookies in production
-            sameSite: 'None', // SameSite attribute set to None
+            sameSite: 'strict', // SameSite attribute set to None
             maxAge: 5 * 24 * 60 * 60 * 1000
         });
 
@@ -270,6 +270,11 @@ export const updatePassword = async (req, res) => {
         const user = await User.findById(req.user._id)
 
         const { oldPassword, newPassword } = req.body
+        if(oldPassword === newPassword){
+            return res.status(403).json({
+                message: "old password & new password are should not same"
+            })
+        }
 
         // check current password and old password
         const checkPassword = await bcrypt.compare(oldPassword, user.password)

@@ -38,7 +38,7 @@ export default function Login() {
       return;
     }
 
-  }, [isAuthenticated, navigate,]);
+  }, [isAuthenticated, navigate,loading]);
 
   useToastNotifications(error);
 
