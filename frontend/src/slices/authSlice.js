@@ -109,9 +109,10 @@ const authSlice = createSlice({
         },
         changePasswordSuccess(state, action) {
             return {
+                ...state,
                 loading: false,
-                isAuthenticated: false,
-                message: action.payload.message
+                message: action.payload.message,
+                status: action.payload.status
             }
         },
         changePasswordFail(state, action) {
@@ -146,7 +147,7 @@ export const {
     singleUserFail,
     profileUpdateRequest,
     profileUpdateSuccess,
-    profileUpdateFail, 
+    profileUpdateFail,
     changePasswordRequest,
     changePasswordSuccess,
     changePasswordFail,

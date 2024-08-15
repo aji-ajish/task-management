@@ -104,7 +104,7 @@ export const logoutUser = async (req, res) => {
         res.cookie("token", "", {
             httpOnly: true,
             expires: new Date(0),
-            sameSite: 'None', // SameSite attribute set to None
+            sameSite: 'strict', // SameSite attribute set to None
             secure: process.env.NODE_ENV !== "development" // Ensure secure cookies in production
         });
         return res.status(200).json({
@@ -278,6 +278,11 @@ export const updatePassword = async (req, res) => {
 
         // check current password and old password
         const checkPassword = await bcrypt.compare(oldPassword, user.password)
+        if (!checkPassword) {
+            return res.status(403).json({
+                message: "old password is Wrong"
+            })
+        }
 
         if (checkPassword) {
             // convert password to hash
@@ -286,8 +291,9 @@ export const updatePassword = async (req, res) => {
 
         await user.save();
 
-        return res.json({
-            message: "password Updated successfully"
+        return res.status(200).json({
+            message: "password Updated successfully",
+            status: true
         })
 
     } catch (error) {

@@ -15,12 +15,18 @@ export default function ChangePassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const { loading, error, message, isAuthenticated } = useSelector(state => state.authState)
+  const { loading, error, message, status } = useSelector(state => state.authState)
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     dispatch(changePassword(oldPassword, newPassword))
+    if(status){
+    dispatch(logout())
+      console.log(status);
+
+    }
   }
+
 
 
   useToastNotifications(error, message);

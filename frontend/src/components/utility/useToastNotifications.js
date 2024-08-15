@@ -6,7 +6,7 @@ import { clearAuthError } from "../../actions/userAction";
 const useToastNotifications = (error, message) => {
     const dispatch = useDispatch();
 
-    // useEffect(() => {
+    useEffect(() => {
         const toastOptions = {
             position: "top-right",
             autoClose: 3000,
@@ -26,7 +26,7 @@ const useToastNotifications = (error, message) => {
         if (message) {
             toast.success(message, toastOptions);
         }
-    // }, [error, message]);
+    }, [error, message,dispatch]);
 };
 
 export default useToastNotifications;

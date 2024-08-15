@@ -37,10 +37,23 @@ export default function Login() {
       navigate("dashboard");
       return;
     }
-
-  }, [isAuthenticated, navigate,loading]);
-
-  useToastNotifications(error);
+    if (error) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        onOpen: () => {
+          dispatch(clearAuthError);
+        },
+      });
+      return;
+    }
+  }, [isAuthenticated, navigate,loading,dispatch,error]);
 
 
   return (

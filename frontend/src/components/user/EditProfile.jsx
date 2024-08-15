@@ -3,10 +3,11 @@ import SideMenu from "../layouts/SideMenu";
 import { useDispatch, useSelector } from "react-redux";
 import dummyAvatar from '../../assets/dummyAvatar.png'
 import { useEffect, useState } from "react";
-import { updateProfile } from "../../actions/userAction";
+import { clearAuthError, updateProfile } from "../../actions/userAction";
 import useToastNotifications from "../utility/useToastNotifications";
 import { useNavigate } from "react-router-dom";
 import SmallLoader from "../layouts/SmallLoader";
+import { toast } from "react-toastify";
 
 export default function EditProfile() {
     const { user } = useSelector(state => state.authState);
@@ -19,7 +20,6 @@ export default function EditProfile() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    console.log(user.image);
 
 
     const { loading, error, message } = useSelector(
@@ -59,9 +59,45 @@ export default function EditProfile() {
         if (!loading && message) {
             navigate('/profile');
         }
-    }, [loading, message, navigate]);
 
-    useToastNotifications(error, message);
+        if (message) {
+            toast.success(message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "dark",
+                onOpen: () => {
+                    dispatch(clearAuthError);
+                },
+            });
+            return;
+        }
+
+    }, [loading, message, navigate, dispatch]);
+
+    useEffect(()=>{
+        if (error) {
+            toast.error(error, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "dark",
+                onOpen: () => {
+                    dispatch(clearAuthError);
+                },
+            });
+            return;
+        }
+    },[error,dispatch])
+
 
 
 
