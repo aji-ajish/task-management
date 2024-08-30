@@ -4,8 +4,9 @@ import SideMenu from "../layouts/SideMenu";
 import SmallLoader from "../layouts/SmallLoader";
 import { useDispatch, useSelector } from "react-redux";
 import useToastNotifications from "../utility/useToastNotifications";
-import { changePassword, logout } from "../../actions/userAction";
+import { changePassword, clearAuthError, logout } from "../../actions/userAction";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 export default function ChangePassword() {
@@ -20,16 +21,53 @@ export default function ChangePassword() {
   const handleSubmit = (e) => {
     e.preventDefault()
     dispatch(changePassword(oldPassword, newPassword))
-    if(status){
-    dispatch(logout())
-      console.log(status);
 
-    }
   }
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        onOpen: () => {
+          dispatch(clearAuthError);
+        },
+      });
+      return;
+    }
+  }, [error, dispatch])
 
+  useEffect(() => {
+    if (message) {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        onOpen: () => {
+          dispatch(clearAuthError);
+        },
+      });
+      return;
+    }
 
-  useToastNotifications(error, message);
+    if (status) {
+      dispatch(logout())
+      console.log(status);
+    }
+  }, [message, dispatch, status])
+
+  // useToastNotifications(error, message);
   return (
     <>
       <MetaData title={"Change Password"} />
