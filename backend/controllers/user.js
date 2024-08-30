@@ -8,7 +8,6 @@ import sendMail from "../middleware/sendMail.js";
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("email", email);
 
     // check user email address
     const user = await User.findOne({ email });
@@ -72,7 +71,13 @@ export const createUser = async (req, res) => {
         message: "Unauthorized Access",
       });
     }
-    if (name || email || phone || address || password) {
+    if (
+      name === "" ||
+      email === "" ||
+      phone === "" ||
+      address === "" ||
+      password === ""
+    ) {
       return res.status(400).json({
         message: "Please Fill all details",
       });
@@ -166,6 +171,7 @@ export const userList = async (req, res) => {
   }
 };
 
+// single user
 export const user = async (req, res) => {
   try {
     if (req.user.role != "admin") {
@@ -242,10 +248,16 @@ export const updateUserById = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    const { email } = req.body;
+    const { email, phone, name, address } = req.body;
 
     // check email already exists
     let userEmail = await User.findOne({ email });
+
+    if (!name || !email || !phone || !address) {
+      return res.status(400).json({
+        message: "Please Fill all details",
+      });
+    }
 
     if (user.email !== email && userEmail) {
       return res.status(400).json({
@@ -267,6 +279,7 @@ export const updateProfile = async (req, res) => {
 
     await user.save();
 
+    const { password: userPassword, ...updatedUser } = user.toObject();
     return res.status(201).json({
       message: "Profile Updated successfully",
       status: 200,
