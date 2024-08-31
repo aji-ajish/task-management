@@ -11,7 +11,7 @@ import downArrow from '../../assets/svg/downArrow.svg'
 import burgerMenu from '../../assets/svg/burgerMenu.svg'
 import avatar from '../../assets/dummyAvatar.png'
 
-export default function SideMenu({ children }) {
+export default function SideMenu({ children, noClass }) {
   const dispatch = useDispatch();
   const dropDown1 = useRef();
   const sideMenu = useRef();
@@ -107,36 +107,38 @@ export default function SideMenu({ children }) {
                 </div>
               </Link>
             </li>
-            <li>
-              <button
-                onClick={SubmenuOpen}
-                type="button"
-                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                <img src={userIcon} className="size-7" />
-                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
-                  Users
-                </span>
-                <img src={downArrow} className="size-6" />
-              </button>
-              <ul ref={dropDown1} className="hidden py-2 space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                    <img src={addUser} className="size-6" />
-                    <span className="ml-2">New Users</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                    <img src={users} className="size-6" />
-                    <span className="ml-2">All Users</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
+
+            {user.role && user.role === 'admin' ?
+              <li>
+                <button
+                  onClick={SubmenuOpen}
+                  type="button"
+                  className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                  <img src={userIcon} className="size-7" />
+                  <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                    Users
+                  </span>
+                  <img src={downArrow} className="size-6" />
+                </button>
+                <ul ref={dropDown1} className="hidden py-2 space-y-2">
+                  <li>
+                    <a
+                      href="#"
+                      className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                      <img src={addUser} className="size-6" />
+                      <span className="ml-2">New Users</span>
+                    </a>
+                  </li>
+                  <li>
+                    <Link
+                      to="/allUsers"
+                      className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                      <img src={users} className="size-6" />
+                      <span className="ml-2">All Users</span>
+                    </Link>
+                  </li>
+                </ul>
+              </li> : ''}
 
 
             <li>
@@ -153,7 +155,7 @@ export default function SideMenu({ children }) {
         </div>
       </aside>
       <div className="p-4 sm:ml-64 h-screen">
-        <div className="p-4 border-2 h-full text-white justify-center flex items-center border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+        <div className={`p-4 border-2 h-full text-white ${noClass & 'items-center'} justify-center flex  border-gray-200 border-dashed rounded-lg dark:border-gray-700`}>
           {children}
         </div>
       </div>

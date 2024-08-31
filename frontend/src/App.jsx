@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/routes/ProtectedRoute";
 import Profile from "./components/user/Profile";
 import EditProfile from "./components/user/EditProfile";
 import ChangePassword from "./components/user/ChangePassword";
+import ListUsers from "./components/user/ListUsers";
 
 export default function App() {
   useEffect(() => {
@@ -62,6 +63,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <ChangePassword />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/allUsers"
+              element={
+                <ProtectedRoute>
+                  <ListUsers />
                 </ProtectedRoute>
               }
             />

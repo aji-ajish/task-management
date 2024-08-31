@@ -152,17 +152,38 @@ export const myProfile = async (req, res) => {
 
 export const userList = async (req, res) => {
   try {
-    if (req.user.role != "admin") {
+    if (req.user.role !== "admin") {
       return res.status(401).json({
         message: "Unauthorized Access",
       });
     }
 
-    const users = await User.find().select("-password");
+    // Pagination parameters
+    const page = parseInt(req.query.page) || 1; // Default to page 1
+    const limit = parseInt(process.env.PAGE_LIMIT) || 5; // Default to 5 users per page
+    const skip = (page - 1) * limit;
+    
+
+    // Fetch users with pagination and excluding the password field
+    const users = await User.find().select("-password").skip(skip).limit(limit);
+
+    // Get the total count of users
+    const totalUsers = await User.countDocuments();
+
+    const totalPages = Math.ceil(totalUsers / limit);
+
     return res.status(200).json({
       message: "User List",
       status: 200,
       data: users,
+      pagination: {
+        totalUsers,
+        totalPages: totalPages,
+        previousPage: page > 1 ? page - 1 : null,
+        currentPage: page,
+        nextPage: page < totalPages ? page + 1 : null,
+        limit
+      },
     });
   } catch (error) {
     return res.status(500).json({
@@ -170,6 +191,7 @@ export const userList = async (req, res) => {
     });
   }
 };
+
 
 // single user
 export const user = async (req, res) => {

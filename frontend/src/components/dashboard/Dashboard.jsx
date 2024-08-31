@@ -6,35 +6,35 @@ import { useEffect } from "react";
 import { clearAuthError } from "../../actions/userAction";
 
 export default function Dashboard() {
-    const dispatch = useDispatch();
-    const {message } = useSelector(
-        (state) => state.authState
-      );
+  const dispatch = useDispatch();
+  const { message } = useSelector(
+    (state) => state.authState
+  );
 
-      useEffect(() => {
-        if (message) {
-          toast.success(message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-            theme: "dark",
-            onOpen: () => {
-              dispatch(clearAuthError);
-            },
-          });
-          return;
-        }
-      }, [message, dispatch]);
+  useEffect(() => {
+    if (message) {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        onOpen: () => {
+          dispatch(clearAuthError);
+        },
+      });
+      return;
+    }
+  }, [message, dispatch]);
 
-    return (
-      <>
-        <SideMenu>
-Hom
-        </SideMenu>
-      </>
-    )
+  return (
+    <>
+      <SideMenu>
+        Home
+      </SideMenu>
+    </>
+  )
 }
