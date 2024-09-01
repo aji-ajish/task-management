@@ -98,11 +98,11 @@ export const changePassword =
     }
   };
 
-export const getAllUsers = (page) => async (dispatch) => {
+export const getAllUsers = (page,limit) => async (dispatch) => {
   try {
     dispatch(getAllUsersRequest());
 
-    const { data } = await axios.get(`/api/v1/user/users?page=${page}`);
+    const { data } = await axios.get(`/api/v1/user/users?page=${page}&limit=${limit}`);
     dispatch(getAllUsersSuccess(data));
   } catch (error) {
     dispatch(getAllUsersFail(error.response.data.message));

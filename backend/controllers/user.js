@@ -160,7 +160,7 @@ export const userList = async (req, res) => {
 
     // Pagination parameters
     const page = parseInt(req.query.page) || 1; // Default to page 1
-    const limit = parseInt(process.env.PAGE_LIMIT) || 5; // Default to 5 users per page
+    const limit = parseInt(req.query.limit) || 5; // Default to 5 users per page
     const skip = (page - 1) * limit;
     
 
