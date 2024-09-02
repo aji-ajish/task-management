@@ -74,6 +74,14 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/user/:id"
+              element={
+                <ProtectedRoute>
+                  <ListUsers />
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </HelmetProvider>
