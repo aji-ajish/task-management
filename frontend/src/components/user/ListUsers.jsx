@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import SideMenu from '../layouts/SideMenu'
 import MetaData from '../layouts/MetaData'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearAuthError, getAllUsers } from '../../actions/userAction'
+import { clearAuthError, deleteUser, getAllUsers } from '../../actions/userAction'
 import Loader from '../layouts/Loader'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
@@ -11,6 +11,7 @@ const ListUsers = () => {
     const dispatch = useDispatch()
     const [listLimit, setListLimit] = useState(5)
     const [currentPageNo, setCurrentPageNo] = useState(1)
+    const [deleteItem, setDeleteItem] = useState(false)
 
     const getCurrentPageNumber = (page) => {
         setCurrentPageNo(page)
@@ -23,7 +24,11 @@ const ListUsers = () => {
 
     useEffect(() => {
         dispatch(getAllUsers(currentPageNo, listLimit))
-    }, [dispatch, currentPageNo, listLimit])
+        deleteItem
+        return () => {
+            setDeleteItem(false)
+        }
+    }, [dispatch, currentPageNo, listLimit, deleteItem])
 
     const { loading, error, userList } = useSelector((state) => state.authState);
 
@@ -34,7 +39,8 @@ const ListUsers = () => {
         setListLimit(Number(no));
     };
 
-    
+
+
     useEffect(() => {
         if (error) {
             toast.error(error, {
@@ -54,6 +60,15 @@ const ListUsers = () => {
         }
     }, [error, dispatch])
 
+    const handleDeleteUser = (userId) => {
+        if (userId !== '66af92a44056010e07dbb26a') {
+            if (window.confirm("Are you sure to delete this record?")) {
+                setDeleteItem(true)
+                dispatch(deleteUser(userId));
+            }
+        }
+    };
+
     // Function to render table rows
     const TableTR = () => {
         return (
@@ -63,7 +78,7 @@ const ListUsers = () => {
                         {/* Calculate Serial Number */}
                         {index + 1 + (currentPage - 1) * limit}
                     </th>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
                         {user.name}
                     </td>
                     <td className="px-6 py-4">
@@ -78,11 +93,12 @@ const ListUsers = () => {
                     <td className="px-6 py-4 capitalize">
                         {user.role}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className={`${user.status === 1 ? 'text-green-400' : 'text-red-500'} px-6 py-4`}>
                         {user.status === 1 ? 'Active' : 'Inactive'}
                     </td>
-                    <td className="px-6 py-4">
-                        <Link to={`user/${user._id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
+                    <td className="px-6 py-4 justify-center gap-5 flex">
+                        <Link to={`${user._id === '66af92a44056010e07dbb26a' ? '#' : `/allUsers/user/${user._id}`}`} className={`${user._id === '66af92a44056010e07dbb26a' && 'cursor-not-allowed'} font-medium px-4 py-1 bg-green-600 rounded-md text-white`}>Edit</Link>
+                        <p className={`${user._id === '66af92a44056010e07dbb26a' ? 'cursor-not-allowed' : 'cursor-pointer'} font-medium px-4 py-1  bg-red-600 rounded-md text-white`} onClick={() => handleDeleteUser(user._id)}>Delete</p>
                     </td>
                 </tr>
             ))

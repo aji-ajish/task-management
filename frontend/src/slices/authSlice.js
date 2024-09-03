@@ -69,9 +69,10 @@ const authSlice = createSlice({
     },
     singleUserSuccess(state, action) {
       return {
+        ...state,
         loading: false,
         isAuthenticated: true,
-        user: action.payload.data,
+        singleUserDetail: action.payload.data,
       };
     },
     singleUserFail(state, action) {
@@ -144,7 +145,49 @@ const authSlice = createSlice({
         error: action.payload,
       };
     },
-   
+    updateSingleUsersRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+      };
+    },
+    updateSingleUsersSuccess(state, action) {
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+        message: action.payload.message,
+      };
+    },
+    updateSingleUsersFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
+    deleteUsersRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+      };
+    },
+    deleteUsersSuccess(state, action) {
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+        message: action.payload.message,
+      };
+    },
+    deleteUsersFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
+
     clearError(state, action) {
       return {
         ...state,
@@ -177,5 +220,11 @@ export const {
   getAllUsersRequest,
   getAllUsersSuccess,
   getAllUsersFail,
+  updateSingleUsersRequest,
+  updateSingleUsersSuccess,
+  updateSingleUsersFail,
+  deleteUsersRequest,
+  deleteUsersSuccess,
+  deleteUsersFail,
 } = authSlice.actions;
 export default authSlice.reducer;

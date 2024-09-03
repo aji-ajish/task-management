@@ -53,7 +53,7 @@ export default function Login() {
       });
       return;
     }
-  }, [isAuthenticated, navigate,loading,dispatch,error]);
+  }, [isAuthenticated, navigate, loading, dispatch, error]);
 
 
   return (

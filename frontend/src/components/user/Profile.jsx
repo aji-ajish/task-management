@@ -11,7 +11,7 @@ export default function Profile() {
     <>
       <MetaData title={`${user.name} Profile`} />
       <SideMenu>
-        {/* <section className="w-full h-screen flex flex-col items-center justify-center px-4"> */}
+        <section className="w-full max-h-full flex flex-col items-center justify-center px-4">
           <div className="max-w-sm w-full dark:text-white border border-white  p-2 rounded-lg">
             <ProfileDropDown userId={user.name}/>
             <div className="flex flex-col items-center pb-10 capitalize">
@@ -45,7 +45,7 @@ export default function Profile() {
             </dl>
 
           </div>
-        {/* </section> */}
+        </section>
       </SideMenu>
     </>
   );

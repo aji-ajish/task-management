@@ -4,6 +4,9 @@ import {
   changePasswordRequest,
   changePasswordSuccess,
   clearError,
+  deleteUsersFail,
+  deleteUsersRequest,
+  deleteUsersSuccess,
   getAllUsersFail,
   getAllUsersRequest,
   getAllUsersSuccess,
@@ -21,6 +24,9 @@ import {
   singleUserFail,
   singleUserRequest,
   singleUserSuccess,
+  updateSingleUsersFail,
+  updateSingleUsersRequest,
+  updateSingleUsersSuccess,
 } from "../slices/authSlice";
 
 export const login = (email, password) => async (dispatch) => {
@@ -106,6 +112,33 @@ export const getAllUsers = (page,limit) => async (dispatch) => {
     dispatch(getAllUsersSuccess(data));
   } catch (error) {
     dispatch(getAllUsersFail(error.response.data.message));
+  }
+};
+
+export const updateSingleUser = (id,formData) => async (dispatch) => {
+  try {
+    dispatch(updateSingleUsersRequest());
+
+    const { data } = await axios.put(`/api/v1/user/updateUser/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    dispatch(updateSingleUsersSuccess(data));
+  } catch (error) {
+    dispatch(updateSingleUsersFail(error.response.data.message));
+  }
+};
+
+export const deleteUser = (id) => async (dispatch) => {
+  try {
+    dispatch(deleteUsersRequest());
+
+    const { data } = await axios.delete(`/api/v1/user/${id}`);
+    dispatch(deleteUsersSuccess(data));
+  } catch (error) {
+    dispatch(deleteUsersFail(error.response.data.message));
   }
 };
 

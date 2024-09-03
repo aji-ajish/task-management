@@ -162,7 +162,6 @@ export const userList = async (req, res) => {
     const page = parseInt(req.query.page) || 1; // Default to page 1
     const limit = parseInt(req.query.limit) || 5; // Default to 5 users per page
     const skip = (page - 1) * limit;
-    
 
     // Fetch users with pagination and excluding the password field
     const users = await User.find().select("-password").skip(skip).limit(limit);
@@ -182,7 +181,7 @@ export const userList = async (req, res) => {
         previousPage: page > 1 ? page - 1 : null,
         currentPage: page,
         nextPage: page < totalPages ? page + 1 : null,
-        limit
+        limit,
       },
     });
   } catch (error) {
@@ -191,7 +190,6 @@ export const userList = async (req, res) => {
     });
   }
 };
-
 
 // single user
 export const user = async (req, res) => {
@@ -234,11 +232,29 @@ export const updateUserById = async (req, res) => {
     const id = req.params.id;
     const user = await User.findById(id);
 
+    // check email already exists
+    const { email } = req.body;
+    let userEmail = await User.findOne({ email });
+
     if (!user) {
       return res.status(404).json({
         message: "User not found",
       });
     }
+
+
+    if (user.email!==req.body.email && userEmail) {
+      return res.status(400).json({
+        message: "User Email Already Exists",
+      });
+    }
+
+    if (user.email !== email && userEmail) {
+      return res.status(400).json({
+        message: "User Email Already Exists",
+      });
+    }
+
 
     Object.assign(user, req.body);
     const image = req.file;
@@ -258,7 +274,7 @@ export const updateUserById = async (req, res) => {
     return res.json({
       message: "User detail Updated successfully",
       status: 200,
-      data: updatedUser,
+      // data: updatedUser,
     });
   } catch (error) {
     return res.status(500).json({

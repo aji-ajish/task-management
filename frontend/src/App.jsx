@@ -16,6 +16,7 @@ import Profile from "./components/user/Profile";
 import EditProfile from "./components/user/EditProfile";
 import ChangePassword from "./components/user/ChangePassword";
 import ListUsers from "./components/user/ListUsers";
+import EditUserDetails from "./components/user/EditUserDetails";
 
 export default function App() {
   useEffect(() => {
@@ -75,10 +76,18 @@ export default function App() {
               }
             />
             <Route
-              path="/user/:id"
+              path="/allUsers/user/:id"
               element={
                 <ProtectedRoute>
-                  <ListUsers />
+                  <EditUserDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/newUser"
+              element={
+                <ProtectedRoute>
+                  <EditUserDetails />
                 </ProtectedRoute>
               }
             />
