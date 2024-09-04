@@ -187,6 +187,28 @@ const authSlice = createSlice({
         error: action.payload,
       };
     },
+    addUserRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+      };
+    },
+    addUserSuccess(state, action) {
+      return {
+        ...state,
+        loading: false,
+        // isAuthenticated: true,
+        // user: action.payload.data,
+        message: action.payload.message,
+      };
+    },
+    addUserFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
 
     clearError(state, action) {
       return {
@@ -226,5 +248,8 @@ export const {
   deleteUsersRequest,
   deleteUsersSuccess,
   deleteUsersFail,
+  addUserRequest,
+  addUserSuccess,
+  addUserFail,
 } = authSlice.actions;
 export default authSlice.reducer;

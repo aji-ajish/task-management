@@ -63,10 +63,12 @@ export const loginUser = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const { name, email, phone, address, password } = req.body;
+    const { name, email, phone, address, password, status, role } = req.body;
     const image = req.file;
+    console.log(req.body); // Debugging: Log the request body
 
-    if (req.user.role != "admin") {
+    // Check for user role
+    if (req.user.role !== "admin") {
       return res.status(401).json({
         message: "Unauthorized Access",
       });
@@ -83,31 +85,34 @@ export const createUser = async (req, res) => {
       });
     }
 
-    // check email already exists
+    // Check if email already exists
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
-        message: "User Email Already Exists",
+        message: "User email already exists",
       });
     }
 
-    // convert password to hash
+    // Convert password to hash
     const hashPassword = await bcrypt.hash(password, 10);
 
-    // create new user
+    // Create new user
     const insertUserDetails = await User.create({
       name,
       email,
       phone,
       address,
       password: hashPassword,
+      status,
+      role,
       image: image?.path,
     });
-    // exclude the password field before sending
+
+    // Exclude the password field before sending the response
     const { password: userPassword, ...newUser } = insertUserDetails.toObject();
 
     return res.status(201).json({
-      message: "User Registration Success",
+      message: "User registration successful",
       status: 201,
       data: newUser,
     });
@@ -242,8 +247,7 @@ export const updateUserById = async (req, res) => {
       });
     }
 
-
-    if (user.email!==req.body.email && userEmail) {
+    if (user.email !== req.body.email && userEmail) {
       return res.status(400).json({
         message: "User Email Already Exists",
       });
@@ -254,7 +258,6 @@ export const updateUserById = async (req, res) => {
         message: "User Email Already Exists",
       });
     }
-
 
     Object.assign(user, req.body);
     const image = req.file;

@@ -1,5 +1,8 @@
 import axios from "axios";
 import {
+  addUserFail,
+  addUserRequest,
+  addUserSuccess,
   changePasswordFail,
   changePasswordRequest,
   changePasswordSuccess,
@@ -104,26 +107,32 @@ export const changePassword =
     }
   };
 
-export const getAllUsers = (page,limit) => async (dispatch) => {
+export const getAllUsers = (page, limit) => async (dispatch) => {
   try {
     dispatch(getAllUsersRequest());
 
-    const { data } = await axios.get(`/api/v1/user/users?page=${page}&limit=${limit}`);
+    const { data } = await axios.get(
+      `/api/v1/user/users?page=${page}&limit=${limit}`
+    );
     dispatch(getAllUsersSuccess(data));
   } catch (error) {
     dispatch(getAllUsersFail(error.response.data.message));
   }
 };
 
-export const updateSingleUser = (id,formData) => async (dispatch) => {
+export const updateSingleUser = (id, formData) => async (dispatch) => {
   try {
     dispatch(updateSingleUsersRequest());
 
-    const { data } = await axios.put(`/api/v1/user/updateUser/${id}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const { data } = await axios.put(
+      `/api/v1/user/updateUser/${id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
 
     dispatch(updateSingleUsersSuccess(data));
   } catch (error) {
@@ -139,6 +148,17 @@ export const deleteUser = (id) => async (dispatch) => {
     dispatch(deleteUsersSuccess(data));
   } catch (error) {
     dispatch(deleteUsersFail(error.response.data.message));
+  }
+};
+
+export const addUser = (formData) => async (dispatch) => {
+  try {
+    dispatch(addUserRequest());
+    const { data } = await axios.post(`/api/v1/user/createUser`, formData);
+
+    dispatch(addUserSuccess(data));
+  } catch (error) {
+    dispatch(addUserFail(error.response.data.message));
   }
 };
 

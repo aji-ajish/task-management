@@ -1,42 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import MetaData from '../layouts/MetaData'
 import SideMenu from '../layouts/SideMenu'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { clearAuthError, getAllUsers, singleUser, updateProfile, updateSingleUser } from '../../actions/userAction';
-import { toast } from 'react-toastify';
 import SmallLoader from '../layouts/SmallLoader';
 import dummyAvatar from '../../assets/dummyAvatar.png'
-import Loader from '../layouts/Loader';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { addUser, clearAuthError } from '../../actions/userAction';
 
 const NewUser = () => {
 
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-
-    // Initialize state only when singleUserDetail is available
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
-    const [role, setRole] = useState('');
+    const [role, setRole] = useState('user');
     const [userStatus, setUserStatus] = useState(0);
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState(dummyAvatar);
 
-    useEffect(() => {
-        if (singleUserDetail) {
-            setName(singleUserDetail.name || '');
-            setEmail(singleUserDetail.email || '');
-            setPhone(singleUserDetail.phone || '');
-            setRole(singleUserDetail.role || '');
-            setUserStatus(singleUserDetail.status || 0)
-            setAddress(singleUserDetail.address || '');
-            setAvatarPreview(singleUserDetail.image ? `${process.env.API_URL}/${singleUserDetail.image}` : dummyAvatar);
-        }
-    }, [singleUserDetail]);
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const { loading, error, message } = useSelector(
+        (state) => state.authState
+    );
 
 
 
@@ -59,19 +48,20 @@ const NewUser = () => {
 
         const data = new FormData();
         data.append('name', name);
+        data.append('password', name);
         data.append('email', email);
         data.append('phone', phone);
         data.append('address', address);
-        data.append('status', userStatus & userStatus === true ? 1 : userStatus === false ? 0 : userStatus);
+        data.append('status', userStatus ? 1 : 0);
         data.append('role', role);
         if (avatar) {
             data.append('image', avatar);
         }
         console.log(data);
 
-        dispatch(updateSingleUser(id,data))
-    };
+        dispatch(addUser(data))
 
+    };
 
     useEffect(() => {
         if (!loading && message) {
@@ -116,9 +106,10 @@ const NewUser = () => {
         }
     }, [error, dispatch])
 
+
     return (
         <>
-            <MetaData title={"Edit Users Details"} />
+            <MetaData title={"Add New User"} />
             <SideMenu>
                 <main className="py-14 w-3/4 pt-1">
                     <div className={`${'relative overflow-x-auto shadow-md sm:rounded-lg max-h-full'}`}>
@@ -126,11 +117,11 @@ const NewUser = () => {
                             <div className="max-w-screen-xl mx-auto px-4 dark:text-white md:px-8">
                                 <div className="max-w-lg mx-auto space-y-3 sm:text-center">
                                     <p className="text-3xl font-semibold sm:text-4xl">
-                                        Edit Profile
+                                        Add New User
                                     </p>
                                 </div>
                                 <div className="mt-4 max-w-lg mx-auto">
-                                    <form onSubmit={handleSubmit} className="space-y-4">
+                                    <form onSubmit={handleSubmit} className="space-y-4" encType='multipart/form-data'>
                                         <div>
                                             <label className="font-medium">Name</label>
                                             <input
@@ -213,7 +204,7 @@ const NewUser = () => {
                                             {loading & loading ? (
                                                 <SmallLoader />
                                             ) : (
-                                                "Update"
+                                                "Submit"
                                             )}
 
                                         </button>
