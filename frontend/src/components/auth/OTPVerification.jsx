@@ -1,5 +1,9 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { clearOtpToken, verifyOTP } from "../../actions/userAction"
+import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
+import SmallLoader from "../layouts/SmallLoader"
 
 
 export default function OTPVerification() {
@@ -25,16 +29,75 @@ export default function OTPVerification() {
     }
   }
 
+
   const handleChange = (e, codeNumber) => {
     const value = e.target.value
     setState({ ...state, [codeNumber]: value.slice(value.length - 1) })
   }
 
+  const activationToken = localStorage.getItem('activationToken')
+
   const navigate = useNavigate()
-  const submitHandler = (e) => {
+  const dispatch = useDispatch()
+
+
+  const { error, message, userId ,loading} = useSelector(state => state.authState)
+
+  const submitHandler = async (e) => {
     e.preventDefault()
+    const otp = Object.values(state).join('');
+
+    await dispatch(verifyOTP(otp, activationToken))
+
+  }
+
+
+  useEffect(() => {
+    if (!activationToken || activationToken === '') {
+      navigate('/forgotPassword')
+    }
+  }, [activationToken, navigate])
+
+  if (userId) {
+    localStorage.removeItem('activationToken')
     navigate('/resetPassword')
   }
+
+  useEffect(() => {
+
+    if (error) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        onOpen: () => {
+          dispatch(clearOtpToken);
+        },
+      });
+      return;
+    }
+    if (message) {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        onOpen: () => {
+          dispatch(clearOtpToken);
+        },
+      });
+      return;
+    }
+  }, [dispatch, error, message]);
 
   return (
     <section className="w-full h-screen flex flex-col items-center justify-center px-4">
@@ -73,8 +136,15 @@ export default function OTPVerification() {
             />
           </div>
           <div className="w-1/4 mx-auto">
-            <button onClick={submitHandler} className=" px-4 mt-5 py-2  text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
-              Verify
+            <button
+              disabled={loading}
+              onClick={submitHandler}
+              className=" px-4 mt-5 py-2  text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
+              {loading & loading ? (
+                <SmallLoader />
+              ) : (
+                "Verify"
+              )}
             </button>
           </div>
 

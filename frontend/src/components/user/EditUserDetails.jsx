@@ -79,7 +79,6 @@ const EditUserDetails = () => {
         if (avatar) {
             data.append('image', avatar);
         }
-        console.log(data);
 
         dispatch(updateSingleUser(id,data))
     };

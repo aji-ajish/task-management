@@ -110,43 +110,44 @@ const ListUsers = () => {
             <MetaData title={"All Users"} />
             <SideMenu noClass>
                 <main className="py-14 w-3/4 ">
-                    <div className={`${!loading && 'relative overflow-x-auto shadow-md sm:rounded-lg max-h-full'}`}>
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" className="px-6 py-3">
-                                        #
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Name
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Email
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Address
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Phone
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Role
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Status
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    !loading && <TableTR />
-                                }
-
-                            </tbody>
-                        </table>
+                    <div className={`${!loading && 'relative overflow-x-auto shadow-md sm:rounded-lg max-h-full '}`}>
+                        <div className="">
+                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-y-auto">
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 sticky top-0 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" className="px-6 py-3">
+                                            #
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Name
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Email
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Address
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Phone
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Role
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Status
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        !loading && <TableTR />
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                         {loading &&
                             <div className="flex items-center justify-center w-full h-56">
                                 <Loader />
@@ -200,7 +201,7 @@ const ListUsers = () => {
                 </main>
             </SideMenu>
         </>
-    )
+    );
 }
 
-export default ListUsers
+export default ListUsers;

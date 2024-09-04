@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import dummyAvatar from '../../assets/dummyAvatar.png'
 import { useEffect, useState } from "react";
 import { clearAuthError, updateProfile } from "../../actions/userAction";
-import useToastNotifications from "../utility/useToastNotifications";
 import { useNavigate } from "react-router-dom";
 import SmallLoader from "../layouts/SmallLoader";
 import { toast } from "react-toastify";
@@ -105,10 +104,10 @@ export default function EditProfile() {
         <>
             <MetaData title={"Edit Profile"} />
             <SideMenu>
-                <main className="py-14">
+                <main className="py-14 max-h-full">
                     <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
-                        <div className="max-w-lg mx-auto gap-12 justify-between lg:flex lg:max-w-none">
-                            <div className="max-w-screen-xl mx-auto px-4 dark:text-white md:px-8">
+                        <div className="max-w-lg  mx-auto gap-12 justify-between lg:flex lg:max-w-none">
+                            <div className="max-w-screen-xl  mx-auto px-4 dark:text-white md:px-8">
                                 <div className="max-w-lg mx-auto space-y-3 sm:text-center">
                                     <p className="text-3xl font-semibold sm:text-4xl">
                                         Edit Profile

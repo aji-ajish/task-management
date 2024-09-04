@@ -6,10 +6,14 @@ import {
   changePasswordFail,
   changePasswordRequest,
   changePasswordSuccess,
+  clearAuthToken,
   clearError,
   deleteUsersFail,
   deleteUsersRequest,
   deleteUsersSuccess,
+  forgotPasswordFail,
+  forgotPasswordRequest,
+  forgotPasswordSuccess,
   getAllUsersFail,
   getAllUsersRequest,
   getAllUsersSuccess,
@@ -21,9 +25,15 @@ import {
   loginSuccess,
   logoutFail,
   logoutSuccess,
+  otpVerifyFail,
+  otpVerifyRequest,
+  otpVerifySuccess,
   profileUpdateFail,
   profileUpdateRequest,
   profileUpdateSuccess,
+  resetPasswordFail,
+  resetPasswordRequest,
+  resetPasswordSuccess,
   singleUserFail,
   singleUserRequest,
   singleUserSuccess,
@@ -52,6 +62,51 @@ export const logout = () => async (dispatch) => {
     dispatch(logoutSuccess(data));
   } catch (error) {
     dispatch(logoutFail(error.response.data.message));
+  }
+};
+
+export const forgotPassword = (email) => async (dispatch) => {
+  try {
+    dispatch(forgotPasswordRequest());
+
+    const { data } = await axios.post(`/api/v1/user/forgotPassword`, {
+      email,
+    });
+
+    dispatch(forgotPasswordSuccess(data));
+  } catch (error) {
+    dispatch(forgotPasswordFail(error.response.data.message));
+  }
+};
+
+export const verifyOTP = (otp, activationToken) => async (dispatch) => {
+  try {
+    dispatch(otpVerifyRequest());
+
+    const { data } = await axios.post(`/api/v1/user/verifyOTP`, {
+      otp,
+      activationToken,
+    });
+    console.log(data);
+
+    dispatch(otpVerifySuccess(data));
+  } catch (error) {
+    dispatch(otpVerifyFail(error.response.data.message));
+  }
+};
+
+export const resetPassword = (id,newPassword) => async (dispatch) => {
+  try {
+    dispatch(resetPasswordRequest());
+
+    const { data } = await axios.put(`/api/v1/user/resetPassword`, {
+      id,
+      newPassword,
+    });
+
+    dispatch(resetPasswordSuccess(data));
+  } catch (error) {
+    dispatch(resetPasswordFail(error.response.data.message));
   }
 };
 
@@ -164,4 +219,8 @@ export const addUser = (formData) => async (dispatch) => {
 
 export const clearAuthError = (dispatch) => {
   dispatch(clearError());
+};
+
+export const clearOtpToken = (dispatch) => {
+  dispatch(clearAuthToken());
 };

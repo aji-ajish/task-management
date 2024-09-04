@@ -209,12 +209,79 @@ const authSlice = createSlice({
         error: action.payload,
       };
     },
+    forgotPasswordRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+      };
+    },
+    forgotPasswordSuccess(state, action) {
+      return {
+        loading: false,
+        message: action.payload.message,
+        activationToken: action.payload.activationToken,
+      };
+    },
+    forgotPasswordFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
+    otpVerifyRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+      };
+    },
+    otpVerifySuccess(state, action) {
+      return {
+        loading: false,
+        message: action.payload.message,
+        userId: action.payload.userId,
+      };
+    },
+    otpVerifyFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
+    resetPasswordRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+      };
+    },
+    resetPasswordSuccess(state, action) {
+      return {
+        loading: false,
+        message: action.payload.message,
+      };
+    },
+    resetPasswordFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
 
     clearError(state, action) {
       return {
         ...state,
         error: undefined,
         message: undefined,
+      };
+    },
+    clearAuthToken(state, action) {
+      return {
+        ...state,
+        error: undefined,
+        message: undefined,
+        activationToken: undefined,
       };
     },
   },
@@ -251,5 +318,15 @@ export const {
   addUserRequest,
   addUserSuccess,
   addUserFail,
+  forgotPasswordRequest,
+  forgotPasswordSuccess,
+  forgotPasswordFail,
+  otpVerifyRequest,
+  otpVerifySuccess,
+  otpVerifyFail,
+  clearAuthToken,
+  resetPasswordRequest,
+  resetPasswordSuccess,
+  resetPasswordFail,
 } = authSlice.actions;
 export default authSlice.reducer;

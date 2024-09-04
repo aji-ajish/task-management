@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearAuthError, login } from "../../actions/userAction";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../layouts/Loader";
-import useToastNotifications from "../utility/useToastNotifications";
 import SmallLoader from "../layouts/SmallLoader";
 
 export default function Login() {
@@ -29,7 +28,6 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
-
   };
 
   useEffect(() => {
