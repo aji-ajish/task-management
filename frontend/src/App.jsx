@@ -18,6 +18,7 @@ import ChangePassword from "./components/user/ChangePassword";
 import ListUsers from "./components/user/ListUsers";
 import EditUserDetails from "./components/user/EditUserDetails";
 import NewUser from "./components/user/NewUser";
+import DepartmentList from "./components/Department/DepartmentList";
 
 export default function App() {
   useEffect(() => {
@@ -89,6 +90,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <NewUser />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/departmentList"
+              element={
+                <ProtectedRoute>
+                  <DepartmentList />
                 </ProtectedRoute>
               }
             />

@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import cors from "cors";
 import connectDB from './config/db.js';
 import userRouter from './routes/user.js';
+import departmentRouter from './routes/department.js'
 
 const app = express()
 dotenv.config({ path: './config/.env' })
@@ -33,6 +34,7 @@ app.use('/userProfiles', express.static('userProfiles'))
 
 // routes
 app.use('/api/v1/', userRouter)
+app.use('/api/v1/', departmentRouter)
 
 
 app.listen(port, () => {

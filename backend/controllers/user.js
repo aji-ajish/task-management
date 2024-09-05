@@ -182,7 +182,7 @@ export const userList = async (req, res) => {
       data: users,
       pagination: {
         totalUsers,
-        totalPages: totalPages,
+        totalPages,
         previousPage: page > 1 ? page - 1 : null,
         currentPage: page,
         nextPage: page < totalPages ? page + 1 : null,
@@ -381,10 +381,19 @@ export const forgotPassword = async (req, res) => {
       });
     }
 
-    // generate otp
-    const otp = Math.floor(Math.random() * 1000000);
+    // Generate OTP function
+    const generateOtp = () => {
+      let otp;
+      do {
+        otp = Math.floor(Math.random() * 1000000);
+      } while (otp.toString().length !== 6); // Ensure OTP is always 6 digits
+      return otp;
+    };
 
-    if(process.env.NODE_ENV !== 'production'){
+    // Get OTP
+    const otp = generateOtp();
+
+    if (process.env.NODE_ENV !== "production") {
       console.log(otp);
     }
 

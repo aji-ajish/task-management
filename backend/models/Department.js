@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema({
-    name: {
+    departmentName: {
         type: String,
         required: true,
         unique: true,

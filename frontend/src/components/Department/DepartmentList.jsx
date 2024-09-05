@@ -1,19 +1,23 @@
-import { useEffect, useState } from 'react'
-import SideMenu from '../layouts/SideMenu'
-import MetaData from '../layouts/MetaData'
-import { useDispatch, useSelector } from 'react-redux'
-import { clearAuthError, deleteUser, getAllUsers } from '../../actions/userAction'
-import Loader from '../layouts/Loader'
-import { toast } from 'react-toastify'
-import { Link } from 'react-router-dom'
-import addUser from '../../assets/svg/addUser.svg'
+import { Link } from "react-router-dom"
+import MetaData from "../layouts/MetaData"
+import SideMenu from "../layouts/SideMenu"
+import department from '../../assets/svg/department.svg'
+import { useDispatch, useSelector } from "react-redux"
+import Loader from "../layouts/Loader"
+import { useEffect, useState } from "react"
+import { getDepartmentList } from "../../actions/depatrtmentAction"
+import { toast } from "react-toastify"
 
-const ListUsers = () => {
+
+const DepartmentList = () => {
+
+
     const dispatch = useDispatch()
+
     const [listLimit, setListLimit] = useState(5)
     const [currentPageNo, setCurrentPageNo] = useState(1)
-    const [deleteItem, setDeleteItem] = useState(false)
-    const [isLimitInitialized, setIsLimitInitialized] = useState(false);  
+    const [isLimitInitialized, setIsLimitInitialized] = useState(false);
+    // const [deleteItem, setDeleteItem] = useState(false)
 
     const getCurrentPageNumber = (page) => {
         setCurrentPageNo(page)
@@ -22,23 +26,21 @@ const ListUsers = () => {
     useEffect(() => {
         const storedLimit = localStorage.getItem('pageLimit');
         setListLimit(storedLimit ? Number(storedLimit) : 5);
-        setIsLimitInitialized(true); 
+        setIsLimitInitialized(true);
     }, []);
 
     useEffect(() => {
-        // Only dispatch when limit is initialized
         if (isLimitInitialized) {
-            dispatch(getAllUsers(currentPageNo, listLimit));
+            dispatch(getDepartmentList(currentPageNo, listLimit))
         }
-        deleteItem
-        return () => {
-            setDeleteItem(false)
-        }
-    }, [dispatch, currentPageNo, listLimit, deleteItem, isLimitInitialized]);
+        // deleteItem
+        // return () => {
+        //     setDeleteItem(false)
+        // }
+    }, [dispatch, currentPageNo, listLimit, isLimitInitialized])
 
-    const { loading, error, userList } = useSelector((state) => state.authState);
-
-    const { totalUsers, totalPages, previousPage, currentPage, nextPage, limit } = userList?.pagination || {};
+    const { error, loading, departmentList } = useSelector(state => state.departmentState)
+    const { totalUsers, totalPages, previousPage, currentPage, nextPage, limit } = departmentList?.pagination || {};
 
     const handleLimitChange = (no) => {
         localStorage.setItem('pageLimit', no);
@@ -58,53 +60,38 @@ const ListUsers = () => {
                 draggable: false,
                 progress: undefined,
                 theme: "dark",
-                onOpen: () => {
-                    dispatch(clearAuthError);
-                },
+                // onOpen: () => {
+                //     dispatch(clearAuthError);
+                // },
             });
             return;
         }
     }, [error, dispatch])
 
-    const handleDeleteUser = (userId) => {
-        if (userId !== '66af92a44056010e07dbb26a') {
-            if (window.confirm("Are you sure to delete this record?")) {
-                setDeleteItem(true)
-                dispatch(deleteUser(userId));
-            }
-        }
-    };
+    // const handleDeleteUser = (userId) => {
+    //     if (userId !== '66af92a44056010e07dbb26a') {
+    //         if (window.confirm("Are you sure to delete this record?")) {
+    //             setDeleteItem(true)
+    //             dispatch(deleteUser(userId));
+    //         }
+    //     }
+    // };
 
-    // Function to render table rows
     const TableTR = () => {
         return (
-            userList?.data?.map((user, index) => (
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user._id}>
+            departmentList?.data?.map((department, index) => (
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={department._id}>
                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {/* Calculate Serial Number */}
                         {index + 1 + (currentPage - 1) * limit}
                     </th>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
-                        {user.name}
+                        {department.departmentName}
                     </td>
-                    <td className="px-6 py-4">
-                        {user.email}
-                    </td>
-                    <td className="px-6 py-4">
-                        {user.address}
-                    </td>
-                    <td className="px-6 py-4">
-                        {user.phone}
-                    </td>
-                    <td className="px-6 py-4 capitalize">
-                        {user.role}
-                    </td>
-                    <td className={`${user.status === 1 ? 'text-green-400' : 'text-red-500'} px-6 py-4`}>
-                        {user.status === 1 ? 'Active' : 'Inactive'}
-                    </td>
+
                     <td className="px-6 py-4 justify-center gap-5 flex">
-                        <Link to={`${user._id === '66af92a44056010e07dbb26a' ? '#' : `/allUsers/user/${user._id}`}`} className={`${user._id === '66af92a44056010e07dbb26a' && 'cursor-not-allowed'} font-medium px-4 py-1 bg-green-600 rounded-md text-white`}>Edit</Link>
-                        <p className={`${user._id === '66af92a44056010e07dbb26a' ? 'cursor-not-allowed' : 'cursor-pointer'} font-medium px-4 py-1  bg-red-600 rounded-md text-white`} onClick={() => handleDeleteUser(user._id)}>Delete</p>
+                        {/* <Link to={`${user._id === '66af92a44056010e07dbb26a' ? '#' : `/allUsers/user/${user._id}`}`} className={`${user._id === '66af92a44056010e07dbb26a' && 'cursor-not-allowed'} font-medium px-4 py-1 bg-green-600 rounded-md text-white`}>Edit</Link>
+                        <p className={`${user._id === '66af92a44056010e07dbb26a' ? 'cursor-not-allowed' : 'cursor-pointer'} font-medium px-4 py-1  bg-red-600 rounded-md text-white`} onClick={() => handleDeleteUser(user._id)}>Delete</p> */}
                     </td>
                 </tr>
             ))
@@ -115,14 +102,14 @@ const ListUsers = () => {
         <>
             <MetaData title={"All Users"} />
             <SideMenu noClass>
-                <main className="py-14 w-3/4 ">
+                <main className="py-14 w-1/2 ">
                     <div className={`${!loading && 'relative overflow-x-auto shadow-md sm:rounded-lg max-h-full '}`}>
                         <div className="">
 
                             <Link to={'/newUser'} className="inline-flex items-center text-white mb-2 bg-white
-                                                            font-medium rounded-lg text-sm px-3 gap-2 py-1.5 dark:bg-blue-400 ">
-                                <img src={addUser} className="size-6" />
-                                <span> Add User</span>
+                                        font-medium rounded-lg text-sm px-3 gap-2 py-1.5 dark:bg-blue-400 ">
+                                <img src={department} className="size-6" />
+                                <span> Add Department</span>
                             </Link>
                             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-y-auto">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50  dark:bg-gray-700 sticky top-0 dark:text-gray-100">
@@ -132,21 +119,6 @@ const ListUsers = () => {
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             Name
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Email
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Address
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Phone
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Role
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Status
                                         </th>
                                         <th scope="col" className="px-6 py-3 text-center">
                                             Action
@@ -181,7 +153,7 @@ const ListUsers = () => {
                             </span>
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
                                 Showing <span className="font-semibold text-gray-900 dark:text-white">
-                                    {limit * (currentPage - 1) + 1}-{limit * (currentPage - 1) + userList.data.length}
+                                    {limit * (currentPage - 1) + 1}-{limit * (currentPage - 1) + departmentList.data.length}
                                 </span> of <span className="font-semibold text-gray-900 dark:text-white">
                                     {totalUsers}
                                 </span>
@@ -213,7 +185,7 @@ const ListUsers = () => {
                 </main>
             </SideMenu>
         </>
-    );
+    )
 }
 
-export default ListUsers;
+export default DepartmentList

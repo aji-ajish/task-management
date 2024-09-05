@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearAuthError, logout } from "../../actions/userAction";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import addUser from '../../assets/svg/addUser.svg'
 import userIcon from '../../assets/svg/user.svg'
 import users from '../../assets/svg/users.svg'
 import logoutSvg from '../../assets/svg/logout.svg'
 import downArrow from '../../assets/svg/downArrow.svg'
 import burgerMenu from '../../assets/svg/burgerMenu.svg'
 import avatar from '../../assets/dummyAvatar.png'
+import department from '../../assets/svg/department.svg'
 
 export default function SideMenu({ children, noClass }) {
   const dispatch = useDispatch();
@@ -109,36 +109,49 @@ export default function SideMenu({ children, noClass }) {
             </li>
 
             {user.role && user.role === 'admin' ?
-              <li>
-                <button
-                  onClick={SubmenuOpen}
-                  type="button"
-                  className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                  <img src={userIcon} className="size-7" />
-                  <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
-                    Users
-                  </span>
-                  <img src={downArrow} className="size-6" />
-                </button>
-                <ul ref={dropDown1} className="hidden py-2 space-y-2">
-                  <li>
-                    <Link
-                      to='/newUser'
-                      className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                      <img src={addUser} className="size-6" />
-                      <span className="ml-2">New Users</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/allUsers"
-                      className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                      <img src={users} className="size-6" />
-                      <span className="ml-2">All Users</span>
-                    </Link>
-                  </li>
-                </ul>
-              </li> : ''}
+              <>
+                {/* <li>
+                  <button
+                    onClick={SubmenuOpen}
+                    type="button"
+                    className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                    <img src={userIcon} className="size-7" />
+                    <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                      Users
+                    </span>
+                    <img src={downArrow} className="size-6" />
+                  </button>
+                  <ul ref={dropDown1} className="hidden py-2 space-y-2">
+                    <li>
+                      <Link
+                        to="/allUsers"
+                        className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        <img src={users} className="size-6" />
+                        <span className="ml-2">All Users</span>
+                      </Link>
+                    </li>
+                  </ul>
+                </li>  */}
+                <li>
+                  <Link to="/allUsers" className="flex cursor-pointer items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <img src={userIcon} className="size-6" />
+                    <span
+                      className="flex-1 ms-3 whitespace-nowrap">
+                      All Users
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/departmentList' className="flex cursor-pointer items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <img src={department} className="size-6" />
+                    <span
+                      className="flex-1 ms-3 whitespace-nowrap">
+                      Departments
+                    </span>
+                  </Link>
+                </li>
+              </>
+              : ''}
 
 
             <li>
