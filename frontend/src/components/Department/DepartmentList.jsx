@@ -5,8 +5,9 @@ import department from '../../assets/svg/department.svg'
 import { useDispatch, useSelector } from "react-redux"
 import Loader from "../layouts/Loader"
 import { useEffect, useState } from "react"
-import { getDepartmentList } from "../../actions/depatrtmentAction"
+import { deleteDepartment, getDepartmentList } from "../../actions/depatrtmentAction"
 import { toast } from "react-toastify"
+import { clearDepartmentError } from "../../slices/departmentSlice"
 
 
 const DepartmentList = () => {
@@ -17,7 +18,7 @@ const DepartmentList = () => {
     const [listLimit, setListLimit] = useState(5)
     const [currentPageNo, setCurrentPageNo] = useState(1)
     const [isLimitInitialized, setIsLimitInitialized] = useState(false);
-    // const [deleteItem, setDeleteItem] = useState(false)
+    const [deleteItem, setDeleteItem] = useState(false)
 
     const getCurrentPageNumber = (page) => {
         setCurrentPageNo(page)
@@ -33,14 +34,14 @@ const DepartmentList = () => {
         if (isLimitInitialized) {
             dispatch(getDepartmentList(currentPageNo, listLimit))
         }
-        // deleteItem
-        // return () => {
-        //     setDeleteItem(false)
-        // }
-    }, [dispatch, currentPageNo, listLimit, isLimitInitialized])
+        deleteItem
+        return () => {
+            setDeleteItem(false)
+        }
+    }, [dispatch, currentPageNo, listLimit, isLimitInitialized, deleteItem])
 
-    const { error, loading, departmentList } = useSelector(state => state.departmentState)
-    const { totalUsers, totalPages, previousPage, currentPage, nextPage, limit } = departmentList?.pagination || {};
+    const { error, loading, departmentList, message } = useSelector(state => state.departmentState)
+    const { totalDepartments, totalPages, previousPage, currentPage, nextPage, limit } = departmentList?.pagination || {};
 
     const handleLimitChange = (no) => {
         localStorage.setItem('pageLimit', no);
@@ -60,22 +61,42 @@ const DepartmentList = () => {
                 draggable: false,
                 progress: undefined,
                 theme: "dark",
-                // onOpen: () => {
-                //     dispatch(clearAuthError);
-                // },
+                onOpen: () => {
+                    dispatch(clearDepartmentError);
+                },
             });
             return;
         }
-    }, [error, dispatch])
+        if (message) {
+            toast.success(message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "dark",
+                onOpen: () => {
+                    dispatch(clearDepartmentError);
+                },
+            });
+            return;
+        }
+    }, [error, dispatch, message])
 
-    const handleDeleteUser = (userId) => {
-        // if (userId !== '66af92a44056010e07dbb26a') {
-        //     if (window.confirm("Are you sure to delete this record?")) {
-        //         setDeleteItem(true)
-        //         dispatch(deleteUser(userId));
-        //     }
-        // }
+
+
+    const handleDeleteUser = (Id) => {
+        if (Id !== '66dace652d64ddbde66861a6') {
+            if (window.confirm("Are you sure to delete this record?")) {
+                setDeleteItem(true)
+                dispatch(deleteDepartment(Id));
+            }
+        }
+
     };
+
 
     const TableTR = () => {
         return (
@@ -85,13 +106,13 @@ const DepartmentList = () => {
                         {/* Calculate Serial Number */}
                         {index + 1 + (currentPage - 1) * limit}
                     </th>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white capitalize">
                         {department.departmentName}
                     </td>
 
                     <td className="px-6 py-4 justify-center gap-5 flex">
-                        <Link to={`${department._id === '' ? '#' : `/departmentList/department/${department._id}`}`} className={`${department._id === '' && 'cursor-not-allowed'} font-medium px-4 py-1 bg-green-600 rounded-md text-white`}>Edit</Link>
-                        <p className={`${department._id === '' ? 'cursor-not-allowed' : 'cursor-pointer'} font-medium px-4 py-1  bg-red-600 rounded-md text-white`} onClick={() => handleDeleteUser(department._id)}>Delete</p>
+                        <Link to={`${department._id === '66dace652d64ddbde66861a6' ? '#' : `/departmentList/department/${department._id}`}`} className={`${department._id === '66dace652d64ddbde66861a6' && 'cursor-not-allowed'} font-medium px-4 py-1 bg-green-600 rounded-md text-white`}>Edit</Link>
+                        <p className={`${department._id === '66dace652d64ddbde66861a6' ? 'cursor-not-allowed' : 'cursor-pointer'} font-medium px-4 py-1  bg-red-600 rounded-md text-white`} onClick={() => handleDeleteUser(department._id)}>Delete</p>
                     </td>
                 </tr>
             ))
@@ -127,7 +148,10 @@ const DepartmentList = () => {
                                 </thead>
                                 <tbody>
                                     {
-                                        !loading && <TableTR />
+                                        !loading && totalDepartments > 0 ? <TableTR /> :
+                                            <th colSpan={3} className="px-6 py-3 text-center">
+                                                No Data
+                                            </th>
                                     }
                                 </tbody>
                             </table>
@@ -139,7 +163,7 @@ const DepartmentList = () => {
                         }
                     </div>
                     {/* Pagination component */}
-                    {totalPages && (
+                    {totalPages !== 0 && (
                         <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
                                 Limit <span className="font-semibold text-gray-900 ml-1">
@@ -153,9 +177,9 @@ const DepartmentList = () => {
                             </span>
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
                                 Showing <span className="font-semibold text-gray-900 dark:text-white">
-                                    {limit * (currentPage - 1) + 1}-{limit * (currentPage - 1) + departmentList.data.length}
+                                    {limit * (currentPage - 1) + 1}-{limit * (currentPage - 1) + departmentList?.data.length}
                                 </span> of <span className="font-semibold text-gray-900 dark:text-white">
-                                    {totalUsers}
+                                    {totalDepartments}
                                 </span>
                             </span>
                             <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">

@@ -17,9 +17,8 @@ const AddDepartment = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (name !== '') {
-            const data = { departmentName: name };
-            console.log(data);
-            
+            const data = { departmentName: name.toLowerCase() };
+
             dispatch(addDepartment(data))
         }
 

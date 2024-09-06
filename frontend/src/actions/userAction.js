@@ -87,7 +87,7 @@ export const verifyOTP = (otp, activationToken) => async (dispatch) => {
       otp,
       activationToken,
     });
-    console.log(data);
+    
 
     dispatch(otpVerifySuccess(data));
   } catch (error) {

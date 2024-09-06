@@ -4,6 +4,8 @@ import {
   departmentAddFail,
   departmentAddRequest,
   departmentAddSuccess,
+  departmentDeleteFail,
+  departmentDeleteSuccess,
   departmentListFail,
   departmentListRequest,
   departmentListSuccess,
@@ -25,16 +27,26 @@ export const getDepartmentList = (page, limit) => async (dispatch) => {
 export const addDepartment = (formData) => async (dispatch) => {
   try {
     dispatch(departmentAddRequest());
-    console.log(formData);
 
     const { data } = await axios.post(`/api/v1/department/createDepartment`, formData, {
       headers: {
-        'Content-Type': 'application/json',  // Ensure the content type is JSON
+        'Content-Type': 'application/json', 
       },
     });
     dispatch(departmentAddSuccess(data));
   } catch (error) {
     dispatch(departmentAddFail(error.response.data.message));
+  }
+};
+
+export const deleteDepartment = (id) => async (dispatch) => {
+  try {
+    dispatch(departmentAddRequest());
+
+    const { data } = await axios.delete(`/api/v1/department/${id}`);
+    dispatch(departmentDeleteSuccess(data));
+  } catch (error) {
+    dispatch(departmentDeleteFail(error.response.data.message));
   }
 };
 

@@ -13,7 +13,7 @@ const ListUsers = () => {
     const [listLimit, setListLimit] = useState(5)
     const [currentPageNo, setCurrentPageNo] = useState(1)
     const [deleteItem, setDeleteItem] = useState(false)
-    const [isLimitInitialized, setIsLimitInitialized] = useState(false);  
+    const [isLimitInitialized, setIsLimitInitialized] = useState(false);
 
     const getCurrentPageNumber = (page) => {
         setCurrentPageNo(page)
@@ -22,7 +22,7 @@ const ListUsers = () => {
     useEffect(() => {
         const storedLimit = localStorage.getItem('pageLimit');
         setListLimit(storedLimit ? Number(storedLimit) : 5);
-        setIsLimitInitialized(true); 
+        setIsLimitInitialized(true);
     }, []);
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const ListUsers = () => {
         }
     }, [dispatch, currentPageNo, listLimit, deleteItem, isLimitInitialized]);
 
-    const { loading, error, userList } = useSelector((state) => state.authState);
+    const { loading, error, userList, message } = useSelector((state) => state.authState);
 
     const { totalUsers, totalPages, previousPage, currentPage, nextPage, limit } = userList?.pagination || {};
 
@@ -64,7 +64,25 @@ const ListUsers = () => {
             });
             return;
         }
-    }, [error, dispatch])
+        if (message) {
+            toast.success(message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "dark",
+                onOpen: () => {
+                    dispatch(clearAuthError);
+                },
+            });
+            return;
+        }
+    }, [error, dispatch, message])
+
+
 
     const handleDeleteUser = (userId) => {
         if (userId !== '66af92a44056010e07dbb26a') {
@@ -155,7 +173,10 @@ const ListUsers = () => {
                                 </thead>
                                 <tbody>
                                     {
-                                        !loading && <TableTR />
+                                        !loading && totalUsers > 0 ? <TableTR /> :
+                                            <th colSpan={3} className="px-6 py-3 text-center">
+                                                No Data
+                                            </th>
                                     }
                                 </tbody>
                             </table>

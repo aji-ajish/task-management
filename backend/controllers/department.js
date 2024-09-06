@@ -2,8 +2,7 @@ import { Department } from "../models/Department.js";
 
 export const createDepartment = async (req, res) => {
   try {
-    console.log(req.body);
-    
+
     const { departmentName } = req.body;
 
     // Check for user role
@@ -150,14 +149,7 @@ export const Departments = async (req, res) => {
 //     Object.assign(user, req.body);
 //     const image = req.file;
 
-//     if (image) {
-//       if (user.image) {
-//         rm(user.image, () => {
-//           console.log("image deleted");
-//         });
-//       }
-//       user.image = image?.path;
-//     }
+
 
 //     await user.save();
 
@@ -174,38 +166,33 @@ export const Departments = async (req, res) => {
 //   }
 // };
 
-// export const deleteUser = async (req, res) => {
-//   try {
-//     if (req.user.role != "admin") {
-//       return res.status(401).json({
-//         message: "Unauthorized Access",
-//       });
-//     }
+export const deleteDepartment = async (req, res) => {
+  try {
+    if (req.user.role != "admin") {
+      return res.status(401).json({
+        message: "Unauthorized Access",
+      });
+    }
 
-//     const id = req.params.id;
+    const id = req.params.id;
 
-//     const user = await User.findById(id);
+    const department = await Department.findById(id);
 
-//     if (!user) {
-//       return res.status(403).json({
-//         message: "Invalid User Detail",
-//       });
-//     }
-//     if (user.image) {
-//       rm(user.image, () => {
-//         console.log("image deleted");
-//       });
-//     }
+    if (!department) {
+      return res.status(403).json({
+        message: "Invalid department Detail",
+      });
+    }
 
-//     await user.deleteOne();
+    await department.deleteOne();
 
-//     return res.status(200).json({
-//       message: "User Detail Deleted Success",
-//       status: 200,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
+    return res.status(200).json({
+      message: "Department Detail Deleted Success",
+      status: 200,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
