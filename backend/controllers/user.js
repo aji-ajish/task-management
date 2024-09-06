@@ -65,7 +65,8 @@ export const createUser = async (req, res) => {
   try {
     const { name, email, phone, address, password, status, role } = req.body;
     const image = req.file;
-    console.log(req.body); // Debugging: Log the request body
+
+    
 
     // Check for user role
     if (req.user.role !== "admin") {

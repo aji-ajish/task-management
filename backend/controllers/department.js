@@ -2,6 +2,8 @@ import { Department } from "../models/Department.js";
 
 export const createDepartment = async (req, res) => {
   try {
+    console.log(req.body);
+    
     const { departmentName } = req.body;
 
     // Check for user role

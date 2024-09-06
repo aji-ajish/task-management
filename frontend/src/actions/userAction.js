@@ -95,7 +95,7 @@ export const verifyOTP = (otp, activationToken) => async (dispatch) => {
   }
 };
 
-export const resetPassword = (id,newPassword) => async (dispatch) => {
+export const resetPassword = (id, newPassword) => async (dispatch) => {
   try {
     dispatch(resetPasswordRequest());
 
@@ -208,6 +208,7 @@ export const deleteUser = (id) => async (dispatch) => {
 
 export const addUser = (formData) => async (dispatch) => {
   try {
+    
     dispatch(addUserRequest());
     const { data } = await axios.post(`/api/v1/user/createUser`, formData);
 

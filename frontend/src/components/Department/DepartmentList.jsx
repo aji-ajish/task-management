@@ -68,14 +68,14 @@ const DepartmentList = () => {
         }
     }, [error, dispatch])
 
-    // const handleDeleteUser = (userId) => {
-    //     if (userId !== '66af92a44056010e07dbb26a') {
-    //         if (window.confirm("Are you sure to delete this record?")) {
-    //             setDeleteItem(true)
-    //             dispatch(deleteUser(userId));
-    //         }
-    //     }
-    // };
+    const handleDeleteUser = (userId) => {
+        // if (userId !== '66af92a44056010e07dbb26a') {
+        //     if (window.confirm("Are you sure to delete this record?")) {
+        //         setDeleteItem(true)
+        //         dispatch(deleteUser(userId));
+        //     }
+        // }
+    };
 
     const TableTR = () => {
         return (
@@ -90,8 +90,8 @@ const DepartmentList = () => {
                     </td>
 
                     <td className="px-6 py-4 justify-center gap-5 flex">
-                        {/* <Link to={`${user._id === '66af92a44056010e07dbb26a' ? '#' : `/allUsers/user/${user._id}`}`} className={`${user._id === '66af92a44056010e07dbb26a' && 'cursor-not-allowed'} font-medium px-4 py-1 bg-green-600 rounded-md text-white`}>Edit</Link>
-                        <p className={`${user._id === '66af92a44056010e07dbb26a' ? 'cursor-not-allowed' : 'cursor-pointer'} font-medium px-4 py-1  bg-red-600 rounded-md text-white`} onClick={() => handleDeleteUser(user._id)}>Delete</p> */}
+                        <Link to={`${department._id === '' ? '#' : `/departmentList/department/${department._id}`}`} className={`${department._id === '' && 'cursor-not-allowed'} font-medium px-4 py-1 bg-green-600 rounded-md text-white`}>Edit</Link>
+                        <p className={`${department._id === '' ? 'cursor-not-allowed' : 'cursor-pointer'} font-medium px-4 py-1  bg-red-600 rounded-md text-white`} onClick={() => handleDeleteUser(department._id)}>Delete</p>
                     </td>
                 </tr>
             ))
@@ -100,13 +100,13 @@ const DepartmentList = () => {
 
     return (
         <>
-            <MetaData title={"All Users"} />
+            <MetaData title={"Department List"} />
             <SideMenu noClass>
                 <main className="py-14 w-1/2 ">
                     <div className={`${!loading && 'relative overflow-x-auto shadow-md sm:rounded-lg max-h-full '}`}>
                         <div className="">
 
-                            <Link to={'/newUser'} className="inline-flex items-center text-white mb-2 bg-white
+                            <Link to={'/addDepartment'} className="inline-flex items-center text-white mb-2 bg-white
                                         font-medium rounded-lg text-sm px-3 gap-2 py-1.5 dark:bg-blue-400 ">
                                 <img src={department} className="size-6" />
                                 <span> Add Department</span>

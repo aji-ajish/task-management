@@ -57,7 +57,7 @@ const NewUser = () => {
         if (avatar) {
             data.append('image', avatar);
         }
-        console.log(data);
+
 
         dispatch(addUser(data))
 
