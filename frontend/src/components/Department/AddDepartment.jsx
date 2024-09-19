@@ -3,7 +3,7 @@ import MetaData from '../layouts/MetaData'
 import SideMenu from '../layouts/SideMenu'
 import SmallLoader from '../layouts/SmallLoader'
 import { useDispatch, useSelector } from 'react-redux'
-import { addDepartment, clearDeptError } from '../../actions/depatrtmentAction'
+import { addDepartment, clearDeptError } from '../../actions/departmentAction'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 

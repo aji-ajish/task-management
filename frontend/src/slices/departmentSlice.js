@@ -41,6 +41,26 @@ const departmentSlice = createSlice({
         error: action.payload,
       };
     },
+    singleDepartmentRequest(state, action) {
+      return {
+        ...state,
+        loading: true,
+      };
+    },
+    singleDepartmentSuccess(state, action) {
+      return {
+        ...state,
+        loading: false,
+        singleDepartmentDetail: action.payload.data,
+      };
+    },
+    singleDepartmentFail(state, action) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    },
     departmentDeleteRequest(state, action) {
       return {
         loading: true,
@@ -53,6 +73,24 @@ const departmentSlice = createSlice({
       };
     },
     departmentDeleteFail(state, action) {
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    },
+    departmentUpdateRequest(state, action) {
+      return {
+        loading: true,
+      };
+    },
+    departmentUpdateSuccess(state, action) {
+      return {
+        loading: false,
+        // departmentName: action.payload.data,
+        message: action.payload.message,
+      };
+    },
+    departmentUpdateFail(state, action) {
       return {
         loading: false,
         error: action.payload,
@@ -79,6 +117,12 @@ export const {
   departmentDeleteRequest,
   departmentDeleteSuccess,
   departmentDeleteFail,
+  singleDepartmentRequest,
+  singleDepartmentSuccess,
+  singleDepartmentFail,
+  departmentUpdateRequest,
+  departmentUpdateSuccess,
+  departmentUpdateFail,
 } = departmentSlice.actions;
 
 export default departmentSlice.reducer;

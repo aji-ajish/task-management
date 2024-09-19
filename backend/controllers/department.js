@@ -2,7 +2,6 @@ import { Department } from "../models/Department.js";
 
 export const createDepartment = async (req, res) => {
   try {
-
     const { departmentName } = req.body;
 
     // Check for user role
@@ -83,88 +82,79 @@ export const Departments = async (req, res) => {
   }
 };
 
-// // single user
-// export const user = async (req, res) => {
-//   try {
-//     if (req.user.role != "admin") {
-//       return res.status(401).json({
-//         message: "Unauthorized Access",
-//       });
-//     }
+// single department
+export const singleDepartment = async (req, res) => {
+  try {
+    if (req.user.role != "admin") {
+      return res.status(401).json({
+        message: "Unauthorized Access",
+      });
+    }
 
-//     const id = req.params.id;
-//     const user = await User.findById(id);
+    const id = req.params.id;
+    const department = await Department.findById(id);
 
-//     if (!user) {
-//       return res.status(403).json({
-//         message: "Invalid User Detail",
-//       });
-//     }
-//     const { password: userPassword, ...userDetails } = user.toObject();
-//     return res.status(200).json({
-//       message: "User Detail",
-//       status: 200,
-//       data: userDetails,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
+    if (!department) {
+      return res.status(403).json({
+        message: "Invalid Department Detail",
+      });
+    }
 
-// export const updateUserById = async (req, res) => {
-//   try {
-//     if (req.user.role != "admin") {
-//       return res.status(401).json({
-//         message: "Unauthorized Access",
-//       });
-//     }
+    return res.status(200).json({
+      message: "Department Detail",
+      status: 200,
+      data: department,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
-//     const id = req.params.id;
-//     const user = await User.findById(id);
+export const updateDepartmentById = async (req, res) => {
+  try {
+    if (req.user.role != "admin") {
+      return res.status(401).json({
+        message: "Unauthorized Access",
+      });
+    }
 
-//     // check email already exists
-//     const { email } = req.body;
-//     let userEmail = await User.findOne({ email });
+    const id = req.params.id;
+    const department = await Department.findById(id);
 
-//     if (!user) {
-//       return res.status(404).json({
-//         message: "User not found",
-//       });
-//     }
+    // check email already exists
+    let departmentName = await Department.findOne(req.body);
 
-//     if (user.email !== req.body.email && userEmail) {
-//       return res.status(400).json({
-//         message: "User Email Already Exists",
-//       });
-//     }
+    if (!department) {
+      return res.status(404).json({
+        message: "Department not found",
+      });
+    }
 
-//     if (user.email !== email && userEmail) {
-//       return res.status(400).json({
-//         message: "User Email Already Exists",
-//       });
-//     }
+    // Check if email already exists
+    let deptName = await Department.findOne(departmentName);
+    if (deptName) {
+      return res.status(400).json({
+        message: "This Name already exists",
+      });
+    }
+console.log(deptName);
 
-//     Object.assign(user, req.body);
-//     const image = req.file;
+    Object.assign(department, req.body);
 
+    await department.save();
 
-
-//     await user.save();
-
-//     const { password, ...updatedUser } = user.toObject();
-//     return res.json({
-//       message: "User detail Updated successfully",
-//       status: 200,
-//       // data: updatedUser,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: error.message,
-//     });
-//   }
-// };
+    return res.json({
+      message: "Department Name Updated successfully",
+      status: 200,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
 export const deleteDepartment = async (req, res) => {
   try {

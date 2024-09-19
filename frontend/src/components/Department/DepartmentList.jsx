@@ -5,9 +5,8 @@ import department from '../../assets/svg/department.svg'
 import { useDispatch, useSelector } from "react-redux"
 import Loader from "../layouts/Loader"
 import { useEffect, useState } from "react"
-import { deleteDepartment, getDepartmentList } from "../../actions/depatrtmentAction"
+import { clearDeptError, deleteDepartment, getDepartmentList } from "../../actions/departmentAction"
 import { toast } from "react-toastify"
-import { clearDepartmentError } from "../../slices/departmentSlice"
 
 
 const DepartmentList = () => {
@@ -62,7 +61,7 @@ const DepartmentList = () => {
                 progress: undefined,
                 theme: "dark",
                 onOpen: () => {
-                    dispatch(clearDepartmentError);
+                    dispatch(clearDeptError);
                 },
             });
             return;
@@ -78,7 +77,7 @@ const DepartmentList = () => {
                 progress: undefined,
                 theme: "dark",
                 onOpen: () => {
-                    dispatch(clearDepartmentError);
+                    dispatch(clearDeptError);
                 },
             });
             return;
@@ -102,10 +101,10 @@ const DepartmentList = () => {
         return (
             departmentList?.data?.map((department, index) => (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={department._id}>
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {/* Calculate Serial Number */}
                         {index + 1 + (currentPage - 1) * limit}
-                    </th>
+                    </td>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white capitalize">
                         {department.departmentName}
                     </td>
@@ -149,9 +148,10 @@ const DepartmentList = () => {
                                 <tbody>
                                     {
                                         !loading && totalDepartments > 0 ? <TableTR /> :
-                                            <th colSpan={3} className="px-6 py-3 text-center">
-                                                No Data
-                                            </th>
+                                            <tr>
+                                                <td colSpan={3} className="px-6 py-3 text-center">
+                                                    No Data</td>
+                                            </tr>
                                     }
                                 </tbody>
                             </table>
